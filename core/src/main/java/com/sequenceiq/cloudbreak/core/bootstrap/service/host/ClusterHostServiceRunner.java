@@ -1,6 +1,6 @@
 package com.sequenceiq.cloudbreak.core.bootstrap.service.host;
 
-import static com.sequenceiq.cloudbreak.core.bootstrap.service.ClusterDeletionBasedExitCriteriaModel.clusterDeletionBasedModel;
+import static com.sequenceiq.cloudbreak.cluster.ClusterDeletionBasedExitCriteriaModel.clusterDeletionBasedModel;
 import static java.util.Collections.singletonMap;
 
 import java.io.IOException;
@@ -21,13 +21,16 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.sequenceiq.cloudbreak.CloudbreakException;
 import com.sequenceiq.cloudbreak.api.model.ExecutorType;
 import com.sequenceiq.cloudbreak.api.model.ExposedService;
 import com.sequenceiq.cloudbreak.cloud.model.AmbariDatabase;
 import com.sequenceiq.cloudbreak.cloud.model.AmbariRepo;
 import com.sequenceiq.cloudbreak.cloud.model.HDPRepo;
 import com.sequenceiq.cloudbreak.cloud.scheduler.CancellationException;
-import com.sequenceiq.cloudbreak.core.CloudbreakException;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariAuthenticationProvider;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariComponentConfigProvider;
+import com.sequenceiq.cloudbreak.cluster.ambari.blueprint.BlueprintProcessor;
 import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.ExposedServices;
 import com.sequenceiq.cloudbreak.domain.HostGroup;
@@ -48,12 +51,9 @@ import com.sequenceiq.cloudbreak.orchestrator.model.SaltPillarProperties;
 import com.sequenceiq.cloudbreak.repository.HostGroupRepository;
 import com.sequenceiq.cloudbreak.repository.InstanceMetaDataRepository;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
-import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.GatewayConfigService;
 import com.sequenceiq.cloudbreak.service.SmartSenseCredentialConfigService;
 import com.sequenceiq.cloudbreak.service.blueprint.ComponentLocatorService;
-import com.sequenceiq.cloudbreak.service.cluster.AmbariAuthenticationProvider;
-import com.sequenceiq.cloudbreak.service.cluster.flow.blueprint.BlueprintProcessor;
 
 @Component
 public class ClusterHostServiceRunner {
@@ -74,7 +74,7 @@ public class ClusterHostServiceRunner {
     private InstanceMetaDataRepository instanceMetaDataRepository;
 
     @Inject
-    private ClusterComponentConfigProvider clusterComponentConfigProvider;
+    private AmbariComponentConfigProvider ambariComponentConfigProvider;
 
     @Inject
     private BlueprintProcessor blueprintProcessor;
@@ -125,11 +125,11 @@ public class ClusterHostServiceRunner {
         }
         servicePillar.put("discovery", new SaltPillarProperties("/discovery/init.sls", singletonMap("platform", stack.cloudPlatform())));
         saveGatewayPillar(primaryGatewayConfig, cluster, servicePillar);
-        AmbariRepo ambariRepo = clusterComponentConfigProvider.getAmbariRepo(cluster.getId());
+        AmbariRepo ambariRepo = ambariComponentConfigProvider.getAmbariRepo(cluster.getId());
         if (ambariRepo != null) {
             servicePillar.put("ambari-repo", new SaltPillarProperties("/ambari/repo.sls", singletonMap("ambari", singletonMap("repo", ambariRepo))));
         }
-        AmbariDatabase ambariDb = clusterComponentConfigProvider.getAmbariDatabase(cluster.getId());
+        AmbariDatabase ambariDb = ambariComponentConfigProvider.getAmbariDatabase(cluster.getId());
         servicePillar.put("ambari-database", new SaltPillarProperties("/ambari/database.sls", singletonMap("ambari", singletonMap("database", ambariDb))));
         saveLdapPillar(cluster.getLdapConfig(), servicePillar);
         saveDockerPillar(cluster.getExecutorType(), servicePillar);
@@ -232,7 +232,7 @@ public class ClusterHostServiceRunner {
     }
 
     private void saveHDPPillar(Long clusterId, Map<String, SaltPillarProperties> servicePillar) {
-        HDPRepo hdprepo = clusterComponentConfigProvider.getHDPRepo(clusterId);
+        HDPRepo hdprepo = ambariComponentConfigProvider.getHDPRepo(clusterId);
         servicePillar.put("hdp", new SaltPillarProperties("/hdp/repo.sls", singletonMap("hdp", hdprepo)));
     }
 

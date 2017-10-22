@@ -8,7 +8,7 @@ import com.sequenceiq.cloudbreak.core.bootstrap.service.ClusterBootstrapper;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.BootstrapNewNodesRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.BootstrapNewNodesResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 
 import reactor.bus.Event;
 import reactor.bus.EventBus;

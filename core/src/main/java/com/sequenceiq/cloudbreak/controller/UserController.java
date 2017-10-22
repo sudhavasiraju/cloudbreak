@@ -13,6 +13,7 @@ import com.sequenceiq.cloudbreak.api.model.UserProfileRequest;
 import com.sequenceiq.cloudbreak.api.model.UserProfileResponse;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.domain.UserProfile;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.user.UserDetailsService;
 import com.sequenceiq.cloudbreak.service.user.UserProfileService;
 import com.sequenceiq.cloudbreak.service.user.UserResourceCheck;

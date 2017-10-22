@@ -22,7 +22,7 @@ import com.sequenceiq.cloudbreak.core.flow2.AbstractAction;
 import com.sequenceiq.cloudbreak.core.flow2.event.ClusterScaleTriggerEvent;
 import com.sequenceiq.cloudbreak.core.flow2.stack.AbstractStackFailureAction;
 import com.sequenceiq.cloudbreak.core.flow2.stack.StackFailureContext;
-import com.sequenceiq.cloudbreak.domain.StackMinimal;
+import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.logger.MDCBuilder;
 import com.sequenceiq.cloudbreak.reactor.api.event.StackFailureEvent;
 import com.sequenceiq.cloudbreak.reactor.api.event.cluster.UpscaleClusterRequest;
@@ -52,14 +52,15 @@ public class ClusterUpscaleActions {
             }
 
             @Override
-            protected void doExecute(ClusterUpscaleContext context, ClusterScaleTriggerEvent payload, Map<Object, Object> variables) throws Exception {
-                clusterUpscaleFlowService.upscalingAmbari(context.getStackId());
+            protected void doExecute(ClusterUpscaleContext context, ClusterScaleTriggerEvent payload, Map<Object, Object> variables)
+                    throws Exception {
+                clusterUpscaleFlowService.upscalingAmbari(context.getStack());
                 sendEvent(context);
             }
 
             @Override
             protected Selectable createRequest(ClusterUpscaleContext context) {
-                return new UpscaleAmbariRequest(context.getStackId(), context.getHostGroupName(), context.getAdjustment());
+                return new UpscaleAmbariRequest(context.getStack().getId(), context.getHostGroupName(), context.getAdjustment());
             }
 
         };
@@ -69,13 +70,14 @@ public class ClusterUpscaleActions {
     public Action executingPrerecipesAction() {
         return new AbstractClusterUpscaleAction<UpscaleAmbariResult>(UpscaleAmbariResult.class) {
             @Override
-            protected void doExecute(ClusterUpscaleContext context, UpscaleAmbariResult payload, Map<Object, Object> variables) throws Exception {
+            protected void doExecute(ClusterUpscaleContext context, UpscaleAmbariResult payload, Map<Object, Object> variables)
+                    throws Exception {
                 sendEvent(context);
             }
 
             @Override
             protected Selectable createRequest(ClusterUpscaleContext context) {
-                return new UpscalePreRecipesRequest(context.getStackId(), context.getHostGroupName());
+                return new UpscalePreRecipesRequest(context.getStack().getId(), context.getHostGroupName());
             }
         };
     }
@@ -85,13 +87,14 @@ public class ClusterUpscaleActions {
         return new AbstractClusterUpscaleAction<UpscalePreRecipesResult>(UpscalePreRecipesResult.class) {
 
             @Override
-            protected void doExecute(ClusterUpscaleContext context, UpscalePreRecipesResult payload, Map<Object, Object> variables) throws Exception {
+            protected void doExecute(ClusterUpscaleContext context, UpscalePreRecipesResult payload, Map<Object, Object> variables)
+                    throws Exception {
                 sendEvent(context);
             }
 
             @Override
             protected Selectable createRequest(ClusterUpscaleContext context) {
-                return new UpscaleClusterRequest(context.getStackId(), context.getHostGroupName());
+                return new UpscaleClusterRequest(context.getStack().getId(), context.getHostGroupName());
             }
         };
     }
@@ -101,13 +104,14 @@ public class ClusterUpscaleActions {
         return new AbstractClusterUpscaleAction<UpscaleClusterResult>(UpscaleClusterResult.class) {
 
             @Override
-            protected void doExecute(ClusterUpscaleContext context, UpscaleClusterResult payload, Map<Object, Object> variables) throws Exception {
+            protected void doExecute(ClusterUpscaleContext context, UpscaleClusterResult payload, Map<Object, Object> variables)
+                    throws Exception {
                 sendEvent(context);
             }
 
             @Override
             protected Selectable createRequest(ClusterUpscaleContext context) {
-                return new UpscalePostRecipesRequest(context.getStackId(), context.getHostGroupName());
+                return new UpscalePostRecipesRequest(context.getStack().getId(), context.getHostGroupName());
             }
         };
     }
@@ -144,7 +148,7 @@ public class ClusterUpscaleActions {
     }
 
     private abstract class AbstractClusterUpscaleAction<P extends Payload>
-        extends AbstractAction<ClusterUpscaleState, ClusterUpscaleEvent, ClusterUpscaleContext, P> {
+            extends AbstractAction<ClusterUpscaleState, ClusterUpscaleEvent, ClusterUpscaleContext, P> {
         protected static final String HOSTGROUPNAME = "HOSTGROUPNAME";
 
         protected static final String ADJUSTMENT = "ADJUSTMENT";
@@ -164,7 +168,7 @@ public class ClusterUpscaleActions {
         @Override
         protected ClusterUpscaleContext createFlowContext(String flowId, StateContext<ClusterUpscaleState, ClusterUpscaleEvent> stateContext, P payload) {
             Map<Object, Object> variables = stateContext.getExtendedState().getVariables();
-            StackMinimal stack = stackService.getMinimalById(payload.getStackId());
+            Stack stack = stackService.getByIdWithLists(payload.getStackId());
             MDCBuilder.buildMdcContext(stack.getId().toString(), stack.getName(), stack.getOwner(), "CLUSTER");
             return new ClusterUpscaleContext(flowId, stack, getHostgroupName(variables), getAdjustment(variables));
         }

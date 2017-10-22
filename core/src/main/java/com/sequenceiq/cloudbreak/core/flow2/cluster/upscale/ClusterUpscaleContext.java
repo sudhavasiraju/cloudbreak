@@ -1,15 +1,15 @@
 package com.sequenceiq.cloudbreak.core.flow2.cluster.upscale;
 
-import com.sequenceiq.cloudbreak.core.flow2.cluster.ClusterMinimalContext;
-import com.sequenceiq.cloudbreak.domain.StackMinimal;
+import com.sequenceiq.cloudbreak.core.flow2.cluster.ClusterContext;
+import com.sequenceiq.cloudbreak.domain.Stack;
 
-public class ClusterUpscaleContext extends ClusterMinimalContext {
+public class ClusterUpscaleContext extends ClusterContext {
     private final String hostGroupName;
 
     private final Integer adjustment;
 
-    public ClusterUpscaleContext(String flowId, StackMinimal stack, String hostGroupName, Integer adjustment) {
-        super(flowId, stack);
+    public ClusterUpscaleContext(String flowId, Stack stack, String hostGroupName, Integer adjustment) {
+        super(flowId, stack, stack.getCluster());
         this.hostGroupName = hostGroupName;
         this.adjustment = adjustment;
     }

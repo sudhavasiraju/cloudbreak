@@ -17,7 +17,7 @@ import com.sequenceiq.cloudbreak.core.flow2.stack.StackContext;
 import com.sequenceiq.cloudbreak.core.flow2.stack.provision.PrepareImageResultToStackEventConverter;
 import com.sequenceiq.cloudbreak.core.flow2.stack.provision.StackCreationEvent;
 import com.sequenceiq.cloudbreak.reactor.api.event.StackEvent;
-import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
 
 import reactor.fn.timer.Timer;
 

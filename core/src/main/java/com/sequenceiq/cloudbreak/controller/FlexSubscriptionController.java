@@ -13,6 +13,7 @@ import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.converter.FlexSubscriptionToJsonConverter;
 import com.sequenceiq.cloudbreak.converter.JsonToFlexSubscriptionConverter;
 import com.sequenceiq.cloudbreak.domain.FlexSubscription;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.flex.FlexSubscriptionService;
 
 @Controller

@@ -14,6 +14,7 @@ import com.sequenceiq.cloudbreak.api.model.ConstraintTemplateRequest;
 import com.sequenceiq.cloudbreak.api.model.ConstraintTemplateResponse;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.domain.ConstraintTemplate;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.constraint.ConstraintTemplateService;
 
 @Component

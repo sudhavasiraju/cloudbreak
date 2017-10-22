@@ -24,7 +24,7 @@ import com.sequenceiq.cloudbreak.api.model.HostGroupAdjustmentJson;
 import com.sequenceiq.cloudbreak.api.model.InstanceGroupAdjustmentJson;
 import com.sequenceiq.cloudbreak.cloud.Acceptable;
 import com.sequenceiq.cloudbreak.common.type.ScalingType;
-import com.sequenceiq.cloudbreak.controller.CloudbreakApiException;
+import com.sequenceiq.cloudbreak.CloudbreakApiException;
 import com.sequenceiq.cloudbreak.controller.FlowsAlreadyRunningException;
 import com.sequenceiq.cloudbreak.core.flow2.Flow2Handler;
 import com.sequenceiq.cloudbreak.core.flow2.chain.FlowChainTriggers;

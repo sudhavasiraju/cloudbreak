@@ -8,8 +8,8 @@ import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.cluster.ClusterStartRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.cluster.ClusterStartResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cluster.ambari.task.AmbariClusterConnector;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
 
 import reactor.bus.Event;

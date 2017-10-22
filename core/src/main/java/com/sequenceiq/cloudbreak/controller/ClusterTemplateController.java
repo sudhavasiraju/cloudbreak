@@ -14,6 +14,7 @@ import com.sequenceiq.cloudbreak.api.model.ClusterTemplateResponse;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.common.type.ResourceEvent;
 import com.sequenceiq.cloudbreak.domain.ClusterTemplate;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.clustertemplate.ClusterTemplateService;
 
 @Component

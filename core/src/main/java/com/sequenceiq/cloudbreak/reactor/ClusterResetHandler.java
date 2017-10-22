@@ -8,7 +8,7 @@ import com.sequenceiq.cloudbreak.core.cluster.AmbariClusterResetService;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterResetRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterResetResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
 
 import reactor.bus.Event;

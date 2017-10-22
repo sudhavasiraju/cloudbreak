@@ -10,7 +10,7 @@ import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.orchestration.EphemeralClusterUpdateFailed;
 import com.sequenceiq.cloudbreak.reactor.api.event.orchestration.EphemeralClusterUpdateRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.orchestration.EphemeralClusterUpdateSuccess;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 
 import reactor.bus.Event;
 import reactor.bus.EventBus;

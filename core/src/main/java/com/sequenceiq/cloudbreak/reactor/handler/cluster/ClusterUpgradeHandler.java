@@ -8,7 +8,7 @@ import com.sequenceiq.cloudbreak.core.cluster.AmbariClusterUpgradeService;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterUpgradeRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterUpgradeResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
 
 import reactor.bus.Event;

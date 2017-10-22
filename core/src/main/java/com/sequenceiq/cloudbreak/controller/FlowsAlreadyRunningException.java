@@ -1,5 +1,7 @@
 package com.sequenceiq.cloudbreak.controller;
 
+import com.sequenceiq.cloudbreak.CloudbreakApiException;
+
 public class FlowsAlreadyRunningException extends CloudbreakApiException {
 
     public FlowsAlreadyRunningException(String message) {

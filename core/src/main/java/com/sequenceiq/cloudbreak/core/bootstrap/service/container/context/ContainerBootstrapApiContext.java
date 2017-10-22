@@ -3,7 +3,7 @@ package com.sequenceiq.cloudbreak.core.bootstrap.service.container.context;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.orchestrator.container.ContainerOrchestrator;
 import com.sequenceiq.cloudbreak.orchestrator.model.GatewayConfig;
-import com.sequenceiq.cloudbreak.service.StackContext;
+import com.sequenceiq.cloudbreak.context.StackContext;
 
 public class ContainerBootstrapApiContext extends StackContext {
 

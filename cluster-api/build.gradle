@@ -1,0 +1,31 @@
+apply plugin: 'java'
+
+repositories {
+    maven { url 'http://repo.spring.io/libs-release' }
+    mavenCentral()
+}
+
+jar {
+    baseName = 'cluster-api'
+}
+
+dependencies {
+    compile group: 'com.google.guava',              name: 'guava',                          version: guavaVersion
+    compile group: 'com.google.http-client',        name: 'google-http-client-jackson2',    version: '1.22.0'
+
+    compile project(':core-api')
+    compile project(':core-repository')
+
+    testCompile (group: 'junit', name: 'junit', version: '4+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile ('org.mockito:mockito-core:1+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+
+    compile (group: 'com.fasterxml.jackson.core',   name: 'jackson-databind',               version: jacksonVersion) {
+        force = true
+    }
+
+}

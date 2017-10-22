@@ -7,7 +7,7 @@ import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.orchestrator.host.HostOrchestrator;
 import com.sequenceiq.cloudbreak.orchestrator.model.GatewayConfig;
 import com.sequenceiq.cloudbreak.orchestrator.model.Node;
-import com.sequenceiq.cloudbreak.service.StackContext;
+import com.sequenceiq.cloudbreak.context.StackContext;
 
 public class HostOrchestratorClusterContext extends StackContext {
 

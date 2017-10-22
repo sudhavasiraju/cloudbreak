@@ -22,7 +22,7 @@ import com.sequenceiq.cloudbreak.common.service.user.UserFilterField;
 import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.InstanceGroup;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
 import com.sequenceiq.cloudbreak.service.user.UserDetailsService;
 
 import freemarker.template.Configuration;

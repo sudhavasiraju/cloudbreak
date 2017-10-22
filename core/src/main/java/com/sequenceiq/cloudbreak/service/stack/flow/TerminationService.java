@@ -27,7 +27,7 @@ import com.sequenceiq.cloudbreak.repository.InstanceMetaDataRepository;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
 import com.sequenceiq.cloudbreak.repository.StackUpdater;
 import com.sequenceiq.cloudbreak.service.cluster.flow.ClusterTerminationService;
-import com.sequenceiq.cloudbreak.service.cluster.flow.filesystem.FileSystemConfigurator;
+import com.sequenceiq.cloudbreak.cluster.FileSystemConfigurator;
 import com.sequenceiq.cloudbreak.service.stack.connector.adapter.ServiceProviderConnectorAdapter;
 
 @Service

@@ -14,7 +14,7 @@ import org.springframework.statemachine.action.Action;
 
 import com.sequenceiq.cloudbreak.cloud.event.Selectable;
 import com.sequenceiq.cloudbreak.core.flow2.cluster.AbstractClusterAction;
-import com.sequenceiq.cloudbreak.core.flow2.cluster.ClusterMinimalContext;
+import com.sequenceiq.cloudbreak.core.flow2.cluster.ClusterContext;
 import com.sequenceiq.cloudbreak.core.flow2.event.ClusterCredentialChangeTriggerEvent;
 import com.sequenceiq.cloudbreak.core.flow2.stack.AbstractStackFailureAction;
 import com.sequenceiq.cloudbreak.core.flow2.stack.FlowMessageService;
@@ -39,20 +39,20 @@ public class ClusterCredentialChangeActions {
     public Action changingClusterCredential() {
         return new AbstractClusterAction<ClusterCredentialChangeTriggerEvent>(ClusterCredentialChangeTriggerEvent.class) {
             @Override
-            protected void doExecute(ClusterMinimalContext ctx, ClusterCredentialChangeTriggerEvent payload, Map<Object, Object> variables) throws Exception {
-                clusterCredentialChangeService.credentialChange(ctx.getStackId());
+            protected void doExecute(ClusterContext context, ClusterCredentialChangeTriggerEvent payload, Map<Object, Object> variables) throws Exception {
+                clusterCredentialChangeService.credentialChange(context.getStack().getId());
                 ClusterCredentialChangeRequest request;
                 switch (payload.getType()) {
                     case REPLACE:
-                        request = ClusterCredentialChangeRequest.replaceUserRequest(ctx.getStackId(), payload.getUser(), payload.getPassword());
+                        request = ClusterCredentialChangeRequest.replaceUserRequest(context.getStack().getId(), payload.getUser(), payload.getPassword());
                         break;
                     case UPDATE:
-                        request = ClusterCredentialChangeRequest.changePasswordRequest(ctx.getStackId(), payload.getPassword());
+                        request = ClusterCredentialChangeRequest.changePasswordRequest(context.getStack().getId(), payload.getPassword());
                         break;
                     default:
                         throw new UnsupportedOperationException("Ambari credential update request not supported: " + payload.getType());
                 }
-                sendEvent(ctx.getFlowId(), request);
+                sendEvent(context.getFlowId(), request);
             }
         };
     }
@@ -61,14 +61,14 @@ public class ClusterCredentialChangeActions {
     public Action clusterCredentialChangeFinished() {
         return new AbstractClusterAction<ClusterCredentialChangeResult>(ClusterCredentialChangeResult.class) {
             @Override
-            protected void doExecute(ClusterMinimalContext context, ClusterCredentialChangeResult payload, Map<Object, Object> variables) throws Exception {
+            protected void doExecute(ClusterContext context, ClusterCredentialChangeResult payload, Map<Object, Object> variables) throws Exception {
                 switch (payload.getRequest().getType()) {
                     case REPLACE:
-                        clusterCredentialChangeService.finishCredentialReplace(context.getStackId(), context.getClusterId(),
+                        clusterCredentialChangeService.finishCredentialReplace(context.getStack().getId(), context.getCluster(),
                                 payload.getRequest().getUser(), payload.getRequest().getPassword());
                         break;
                     case UPDATE:
-                        clusterCredentialChangeService.finishCredentialUpdate(context.getStackId(), context.getClusterId(),
+                        clusterCredentialChangeService.finishCredentialUpdate(context.getStack().getId(), context.getCluster(),
                                 payload.getRequest().getPassword());
                         break;
                     default:
@@ -78,7 +78,7 @@ public class ClusterCredentialChangeActions {
             }
 
             @Override
-            protected Selectable createRequest(ClusterMinimalContext context) {
+            protected Selectable createRequest(ClusterContext context) {
                 return new StackEvent(ClusterCredentialChangeEvent.FINALIZED_EVENT.event(), context.getStack().getId());
             }
         };

@@ -14,4 +14,5 @@ public class DecommissionRequest extends AbstractClusterScaleRequest {
     public Set<String> getHostNames() {
         return hostNames;
     }
+
 }

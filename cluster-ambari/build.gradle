@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'info.solidsoft.pitest'
+
+repositories {
+    maven { url 'http://repo.spring.io/libs-release' }
+    mavenCentral()
+}
+
+jar {
+    baseName = 'cluster-ambari'
+}
+
+dependencies {
+
+    compile("com.sequenceiq:${ambariClientName}:${ambariClientVersion}") {
+        exclude group: 'org.slf4j';
+    }
+
+    compile project(':cluster-api')
+    compile project(':cloud-reactor')
+
+    compile group: 'org.slf4j',                     name: 'slf4j-api',                      version: slf4jApiVersion
+    compile group: 'org.apache.commons',            name: 'commons-lang3',                  version: apacheCommonsLangVersion
+    compile group: 'commons-io',                    name: 'commons-io',                     version: '2.4'
+    compile group: 'commons-codec',                 name: 'commons-codec',                  version: '1.10'
+    compile group: 'org.freemarker',                name: 'freemarker',                     version: freemarkerVersion
+    compile group: 'com.github.jknack',             name: 'handlebars',                     version: '4.0.6'
+
+    testCompile group: 'org.springframework.boot',  name: 'spring-boot-starter-test',       version: springBootVersion
+    testCompile group: 'org.springframework.boot',  name:'spring-boot-starter-freemarker',  version:springBootVersion
+    testCompile (group: 'junit', name: 'junit', version: '4+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile ('org.mockito:mockito-core:1+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+
+}

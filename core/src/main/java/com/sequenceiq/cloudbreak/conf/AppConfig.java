@@ -57,7 +57,7 @@ import com.sequenceiq.cloudbreak.orchestrator.executor.ParallelOrchestratorCompo
 import com.sequenceiq.cloudbreak.orchestrator.host.HostOrchestrator;
 import com.sequenceiq.cloudbreak.orchestrator.state.ExitCriteria;
 import com.sequenceiq.cloudbreak.service.StackUnderOperationService;
-import com.sequenceiq.cloudbreak.service.cluster.flow.filesystem.FileSystemConfigurator;
+import com.sequenceiq.cloudbreak.cluster.FileSystemConfigurator;
 import com.sequenceiq.cloudbreak.util.FileReaderUtils;
 import com.sequenceiq.cloudbreak.util.JsonUtil;
 

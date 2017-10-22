@@ -4,12 +4,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cluster.ambari.task.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterCredentialChangeRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.resource.ClusterCredentialChangeResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.repository.ClusterRepository;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
 
 import reactor.bus.Event;
@@ -22,6 +24,9 @@ public class ClusterCredentialChangeHandler implements ReactorEventHandler<Clust
 
     @Inject
     private StackService stackService;
+
+    @Inject
+    private ClusterRepository clusterRepository;
 
     @Inject
     private EventBus eventBus;
@@ -37,6 +42,7 @@ public class ClusterCredentialChangeHandler implements ReactorEventHandler<Clust
         ClusterCredentialChangeResult result;
         try {
             Stack stack = stackService.getById(request.getStackId());
+            Cluster cluster = clusterRepository.findOneWithLists(stack.getCluster().getId());
             switch (request.getType()) {
                 case REPLACE:
                     ambariClusterConnector.credentialReplaceAmbariCluster(stack.getId(), request.getUser(), request.getPassword());

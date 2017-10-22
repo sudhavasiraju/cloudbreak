@@ -1,0 +1,36 @@
+package com.sequenceiq.cloudbreak.cluster.ambari.task;
+
+import java.util.Set;
+
+import com.sequenceiq.ambari.client.AmbariClient;
+import com.sequenceiq.cloudbreak.context.StackContext;
+import com.sequenceiq.cloudbreak.domain.HostMetadata;
+import com.sequenceiq.cloudbreak.domain.Stack;
+
+public class AmbariHostsCheckerContext extends StackContext {
+
+    private final AmbariClient ambariClient;
+
+    private final Set<HostMetadata> hostsInCluster;
+
+    private final int hostCount;
+
+    public AmbariHostsCheckerContext(Stack stack, AmbariClient ambariClient, Set<HostMetadata> hostsInCluster, int hostCount) {
+        super(stack);
+        this.ambariClient = ambariClient;
+        this.hostsInCluster = hostsInCluster;
+        this.hostCount = hostCount;
+    }
+
+    public AmbariClient getAmbariClient() {
+        return ambariClient;
+    }
+
+    public Set<HostMetadata> getHostsInCluster() {
+        return hostsInCluster;
+    }
+
+    public int getHostCount() {
+        return hostCount;
+    }
+}

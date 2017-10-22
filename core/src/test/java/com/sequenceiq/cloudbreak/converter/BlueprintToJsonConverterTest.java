@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sequenceiq.cloudbreak.TestUtil;
 import com.sequenceiq.cloudbreak.api.model.BlueprintResponse;
-import com.sequenceiq.cloudbreak.controller.json.JsonHelper;
+import com.sequenceiq.cloudbreak.json.JsonHelper;
 import com.sequenceiq.cloudbreak.domain.Blueprint;
 
 public class BlueprintToJsonConverterTest extends AbstractEntityConverterTest<Blueprint> {

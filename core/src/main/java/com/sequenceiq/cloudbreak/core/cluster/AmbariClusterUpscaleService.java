@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,21 +18,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.sequenceiq.cloudbreak.CloudbreakException;
 import com.sequenceiq.cloudbreak.api.model.InstanceStatus;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
+import com.sequenceiq.cloudbreak.cluster.ambari.RecipeEngine;
+import com.sequenceiq.cloudbreak.cluster.ambari.task.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.common.model.OrchestratorType;
 import com.sequenceiq.cloudbreak.common.type.HostMetadataState;
-import com.sequenceiq.cloudbreak.core.CloudbreakException;
-import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorType;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorTypeResolver;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.container.ClusterContainerRunner;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.host.ClusterHostServiceRunner;
+import com.sequenceiq.cloudbreak.core.bootstrap.service.host.HostOrchestratorResolver;
 import com.sequenceiq.cloudbreak.domain.Container;
 import com.sequenceiq.cloudbreak.domain.HostGroup;
 import com.sequenceiq.cloudbreak.domain.HostMetadata;
 import com.sequenceiq.cloudbreak.domain.Orchestrator;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariClusterConnector;
-import com.sequenceiq.cloudbreak.service.cluster.flow.RecipeEngine;
+import com.sequenceiq.cloudbreak.orchestrator.host.HostOrchestrator;
 import com.sequenceiq.cloudbreak.service.hostgroup.HostGroupService;
 import com.sequenceiq.cloudbreak.service.stack.InstanceMetadataService;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
@@ -63,6 +66,9 @@ public class AmbariClusterUpscaleService {
 
     @Inject
     private HostGroupService hostGroupService;
+
+    @Inject
+    private HostOrchestratorResolver hostOrchestratorResolver;
 
     @Inject
     private RecipeEngine recipeEngine;
@@ -110,7 +116,12 @@ public class AmbariClusterUpscaleService {
         HostGroup hostGroup = hostGroupService.getByClusterIdAndName(stack.getCluster().getId(), hostGroupName);
         Set<HostGroup> hostGroups = hostGroupService.getByCluster(stack.getCluster().getId());
         Set<HostMetadata> hostMetadata = hostGroupService.findEmptyHostMetadataInHostGroup(hostGroup.getId());
-        recipeEngine.executeUpscalePreInstall(stack, hostGroup, hostMetadata, hostGroups);
+        OrchestratorType orchestratorType = orchestratorTypeResolver.resolveType(stack.getOrchestrator().getType());
+        Optional<HostOrchestrator> hostOrchestratorOptional = Optional.empty();
+        if (orchestratorType.hostOrchestrator()) {
+            hostOrchestratorOptional = Optional.of(hostOrchestratorResolver.get(stack.getOrchestrator().getType()));
+        }
+        recipeEngine.executeUpscalePreInstall(stack, hostGroup, hostGroups, hostOrchestratorOptional);
     }
 
     public void installServicesOnNewHosts(Long stackId, String hostGroupName) throws CloudbreakException {
@@ -126,6 +137,11 @@ public class AmbariClusterUpscaleService {
         LOGGER.info("Start executing post recipes");
         HostGroup hostGroup = hostGroupService.getByClusterIdAndName(stack.getCluster().getId(), hostGroupName);
         Set<HostMetadata> hostMetadata = hostGroupService.findEmptyHostMetadataInHostGroup(hostGroup.getId());
-        recipeEngine.executeUpscalePostInstall(stack, hostMetadata);
+        OrchestratorType orchestratorType = orchestratorTypeResolver.resolveType(stack.getOrchestrator().getType());
+        Optional<HostOrchestrator> hostOrchestratorOptional = Optional.empty();
+        if (orchestratorType.hostOrchestrator()) {
+            hostOrchestratorOptional = Optional.of(hostOrchestratorResolver.get(stack.getOrchestrator().getType()));
+        }
+        recipeEngine.executeUpscalePostInstall(stack, hostOrchestratorOptional);
     }
 }

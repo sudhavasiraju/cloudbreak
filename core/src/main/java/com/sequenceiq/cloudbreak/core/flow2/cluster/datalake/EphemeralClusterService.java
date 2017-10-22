@@ -12,7 +12,7 @@ import com.sequenceiq.cloudbreak.core.flow2.stack.FlowMessageService;
 import com.sequenceiq.cloudbreak.core.flow2.stack.Msg;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.repository.StackUpdater;
-import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
 
 @Service
 public class EphemeralClusterService {
@@ -26,16 +26,16 @@ public class EphemeralClusterService {
     @Inject
     private FlowMessageService flowMessageService;
 
-    public void updateClusterStarted(long stackId) {
-        clusterService.updateClusterStatusByStackId(stackId, UPDATE_IN_PROGRESS);
-        stackUpdater.updateStackStatus(stackId, DetailedStackStatus.CLUSTER_OPERATION, "Ephemeral cluster update started");
-        flowMessageService.fireEventAndLog(stackId, Msg.STACK_DATALAKE_UPDATE, UPDATE_IN_PROGRESS.name());
+    public void updateClusterStarted(Stack stack) {
+        clusterService.updateClusterStatusByStackId(stack.getId(), UPDATE_IN_PROGRESS);
+        stackUpdater.updateStackStatus(stack.getId(), DetailedStackStatus.CLUSTER_OPERATION, "Ephemeral cluster update started");
+        flowMessageService.fireEventAndLog(stack.getId(), Msg.STACK_DATALAKE_UPDATE, UPDATE_IN_PROGRESS.name());
     }
 
-    public void updateClusterFinished(long stackId) {
-        clusterService.updateClusterStatusByStackId(stackId, AVAILABLE);
-        stackUpdater.updateStackStatus(stackId, DetailedStackStatus.AVAILABLE, "Ephemeral cluster has been updated");
-        flowMessageService.fireEventAndLog(stackId, Msg.STACK_DATALAKE_UPDATE_FINISHED, AVAILABLE.name());
+    public void updateClusterFinished(Stack stack) {
+        clusterService.updateClusterStatusByStackId(stack.getId(), AVAILABLE);
+        stackUpdater.updateStackStatus(stack.getId(), DetailedStackStatus.AVAILABLE, "Ephemeral cluster has been updated");
+        flowMessageService.fireEventAndLog(stack.getId(), Msg.STACK_DATALAKE_UPDATE_FINISHED, AVAILABLE.name());
     }
 
     public void updateClusterFailed(Stack stack, Exception exception) {

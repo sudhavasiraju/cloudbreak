@@ -10,7 +10,7 @@ import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.proxy.RegisterProxyFailed;
 import com.sequenceiq.cloudbreak.reactor.api.event.proxy.RegisterProxyRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.proxy.RegisterProxySuccess;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
 import com.sequenceiq.cloudbreak.service.proxy.ProxyRegistrator;
 import com.sequenceiq.cloudbreak.util.StackUtil;

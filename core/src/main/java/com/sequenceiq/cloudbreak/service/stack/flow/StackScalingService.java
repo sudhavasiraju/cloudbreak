@@ -26,11 +26,11 @@ import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.repository.HostMetadataRepository;
 import com.sequenceiq.cloudbreak.repository.InstanceGroupRepository;
 import com.sequenceiq.cloudbreak.repository.InstanceMetaDataRepository;
-import com.sequenceiq.cloudbreak.service.TlsSecurityService;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariClusterConnector;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariDecommissioner;
+import com.sequenceiq.cloudbreak.service.tls.TlsSecurityService;
+import com.sequenceiq.cloudbreak.cluster.ambari.task.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.cluster.ambari.task.AmbariDecommissioner;
 import com.sequenceiq.cloudbreak.service.events.CloudbreakEventService;
-import com.sequenceiq.cloudbreak.service.messages.CloudbreakMessagesService;
+import com.sequenceiq.cloudbreak.message.CloudbreakMessagesService;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
 import com.sequenceiq.cloudbreak.service.stack.connector.adapter.ServiceProviderConnectorAdapter;
 

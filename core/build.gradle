@@ -39,21 +39,15 @@ jar {
 
 dependencies {
 
-    compile("com.sequenceiq:${ambariClientName}:${ambariClientVersion}") {
-        exclude group: 'org.slf4j';
-    }
-
     compile group: 'org.springframework.retry',     name: 'spring-retry',                   version: '1.2.0.RELEASE'
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter',            version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-web',        version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-actuator',   version: springBootVersion
-    compile group: 'org.springframework.boot',      name: 'spring-boot-starter-data-jpa',   version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-websocket',  version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-aop',        version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-freemarker', version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-security',   version: springBootVersion
     compile group: 'org.springframework.boot',      name: 'spring-boot-starter-jersey',     version: springBootVersion
-    compile (group: 'org.springframework.statemachine', name: 'spring-statemachine-core', version: '1.0.1.RELEASE') { exclude group: 'org.springframework' }
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2',    version: springOauthVersion
     compile group: 'io.projectreactor',             name: 'reactor-core',                   version: eventBusVersion
     compile group: 'io.projectreactor',             name: 'reactor-bus',                    version: eventBusVersion
@@ -82,14 +76,14 @@ dependencies {
     compile group: 'com.icegreen',                  name: 'greenmail',                      version: '1.4.1'
     compile group: 'org.mybatis',                   name: 'mybatis-migrations',             version: '3.2.0'
     compile group: 'com.cedarsoftware',             name: 'json-io',                        version: '4.9.12'
-    compile group: 'com.github.jknack',             name: 'handlebars',                     version: '4.0.6'
     compile group: 'com.google.code.findbugs',      name: 'annotations',                    version: '3.0.1'
 
-    compile project(':core-model')
+    compile project(':core-repository')
     compile project(':orchestrator-api')
     compile project(':cloud-reactor-api')
     compile project(':cloud-reactor')
     compile project(':structuredevent-model')
+    compile project(':cluster-ambari')
 
     runtime project(':orchestrator-marathon')
     runtime project(':orchestrator-salt')

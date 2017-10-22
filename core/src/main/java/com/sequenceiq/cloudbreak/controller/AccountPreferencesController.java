@@ -16,6 +16,7 @@ import com.sequenceiq.cloudbreak.api.model.AccountPreferencesJson;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUserRole;
 import com.sequenceiq.cloudbreak.domain.AccountPreferences;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.account.AccountPreferencesService;
 import com.sequenceiq.cloudbreak.service.account.ScheduledAccountPreferencesValidator;
 

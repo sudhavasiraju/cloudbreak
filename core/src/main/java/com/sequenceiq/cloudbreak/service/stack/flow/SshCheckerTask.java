@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.sequenceiq.cloudbreak.client.KeyStoreUtil;
-import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
 import com.sequenceiq.cloudbreak.service.StackBasedStatusCheckerTask;
 
 import net.schmizz.sshj.SSHClient;

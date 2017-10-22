@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 import com.sequenceiq.cloudbreak.cloud.model.AmbariCatalog;
 import com.sequenceiq.cloudbreak.cloud.model.CloudbreakImageCatalog;
 import com.sequenceiq.cloudbreak.cloud.model.HDPInfo;
-import com.sequenceiq.cloudbreak.core.CloudbreakImageNotFoundException;
+import com.sequenceiq.cloudbreak.CloudbreakImageNotFoundException;
 
 @Service
 public class HdpInfoSearchService {

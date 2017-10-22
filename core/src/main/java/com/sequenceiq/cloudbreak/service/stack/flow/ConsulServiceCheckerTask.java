@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.catalog.model.CatalogService;
-import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
 import com.sequenceiq.cloudbreak.service.StackBasedStatusCheckerTask;
 
 @Component

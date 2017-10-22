@@ -15,6 +15,7 @@ import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.domain.CbUsageFilterParameters;
 import com.sequenceiq.cloudbreak.domain.CbUsageFilterParameters.Builder;
 import com.sequenceiq.cloudbreak.facade.CloudbreakUsagesFacade;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 
 @Component
 public class CloudbreakUsageController implements UsageEndpoint {

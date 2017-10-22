@@ -25,8 +25,8 @@ import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.repository.ClusterRepository;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
-import com.sequenceiq.cloudbreak.service.notification.Notification;
-import com.sequenceiq.cloudbreak.service.notification.NotificationSender;
+import com.sequenceiq.cloudbreak.notification.Notification;
+import com.sequenceiq.cloudbreak.notification.NotificationSender;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UptimeNotifierTest {

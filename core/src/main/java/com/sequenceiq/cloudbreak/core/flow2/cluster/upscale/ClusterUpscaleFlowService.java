@@ -24,10 +24,9 @@ import com.sequenceiq.cloudbreak.core.flow2.stack.Msg;
 import com.sequenceiq.cloudbreak.domain.HostGroup;
 import com.sequenceiq.cloudbreak.domain.HostMetadata;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.domain.StackMinimal;
 import com.sequenceiq.cloudbreak.repository.HostMetadataRepository;
 import com.sequenceiq.cloudbreak.repository.StackUpdater;
-import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
 import com.sequenceiq.cloudbreak.service.cluster.flow.EmailSenderService;
 import com.sequenceiq.cloudbreak.service.hostgroup.HostGroupService;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
@@ -61,12 +60,12 @@ public class ClusterUpscaleFlowService {
     @Inject
     private StackUtil stackUtil;
 
-    public void upscalingAmbari(long stackId) {
-        clusterService.updateClusterStatusByStackId(stackId, UPDATE_IN_PROGRESS, "Upscaling the cluster.");
-        flowMessageService.fireEventAndLog(stackId, Msg.AMBARI_CLUSTER_SCALING_UP, UPDATE_IN_PROGRESS.name());
+    public void upscalingAmbari(Stack stack) {
+        clusterService.updateClusterStatusByStackId(stack.getId(), UPDATE_IN_PROGRESS, "Upscaling the cluster.");
+        flowMessageService.fireEventAndLog(stack.getId(), Msg.AMBARI_CLUSTER_SCALING_UP, UPDATE_IN_PROGRESS.name());
     }
 
-    public void clusterUpscaleFinished(StackMinimal stack, String hostgroupName) {
+    public void clusterUpscaleFinished(Stack stack, String hostgroupName) {
         int numOfFailedHosts = updateMetadata(stack, hostgroupName);
         boolean success = numOfFailedHosts == 0;
         if (success) {
@@ -94,14 +93,14 @@ public class ClusterUpscaleFlowService {
         flowMessageService.fireEventAndLog(stack.getId(), Msg.AMBARI_CLUSTER_SCALING_FAILED, UPDATE_FAILED.name(), "added to", errorDetails);
     }
 
-    private int updateMetadata(StackMinimal stack, String hostGroupName) {
+    private int updateMetadata(Stack stack, String hostGroupName) {
         LOGGER.info("Start update metadata");
         HostGroup hostGroup = hostGroupService.getByClusterIdAndName(stack.getCluster().getId(), hostGroupName);
         Set<HostMetadata> hostMetadata = hostGroupService.findEmptyHostMetadataInHostGroup(hostGroup.getId());
         updateFailedHostMetaData(hostMetadata);
         int failedHosts = 0;
         for (HostMetadata hostMeta : hostMetadata) {
-            if (!BYOS.equals(stack.getCloudPlatform()) && hostGroup.getConstraint().getInstanceGroup() != null) {
+            if (!BYOS.equals(stack.cloudPlatform()) && hostGroup.getConstraint().getInstanceGroup() != null) {
                 stackService.updateMetaDataStatus(stack.getId(), hostMeta.getHostName(), InstanceStatus.REGISTERED);
             }
             hostGroupService.updateHostMetaDataStatus(hostMeta.getId(), HostMetadataState.HEALTHY);

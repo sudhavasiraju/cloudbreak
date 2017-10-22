@@ -52,18 +52,20 @@ import com.sequenceiq.cloudbreak.cloud.model.AmbariDatabase;
 import com.sequenceiq.cloudbreak.cloud.model.AmbariRepo;
 import com.sequenceiq.cloudbreak.cloud.model.HDPRepo;
 import com.sequenceiq.cloudbreak.cloud.store.InMemoryStateStore;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariClientProvider;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.common.type.APIResourceType;
 import com.sequenceiq.cloudbreak.common.type.ComponentType;
 import com.sequenceiq.cloudbreak.common.type.HostMetadataState;
 import com.sequenceiq.cloudbreak.controller.BadRequestException;
-import com.sequenceiq.cloudbreak.controller.NotFoundException;
-import com.sequenceiq.cloudbreak.controller.json.JsonHelper;
+import com.sequenceiq.cloudbreak.service.NotFoundException;
+import com.sequenceiq.cloudbreak.json.JsonHelper;
 import com.sequenceiq.cloudbreak.controller.validation.blueprint.BlueprintValidator;
 import com.sequenceiq.cloudbreak.converter.scheduler.StatusToPollGroupConverter;
-import com.sequenceiq.cloudbreak.core.CloudbreakException;
-import com.sequenceiq.cloudbreak.core.CloudbreakSecuritySetupException;
-import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorType;
+import com.sequenceiq.cloudbreak.CloudbreakException;
+import com.sequenceiq.cloudbreak.CloudbreakSecuritySetupException;
+import com.sequenceiq.cloudbreak.common.model.OrchestratorType;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorTypeResolver;
 import com.sequenceiq.cloudbreak.core.flow2.service.ReactorFlowManager;
 import com.sequenceiq.cloudbreak.domain.Blueprint;
@@ -85,17 +87,17 @@ import com.sequenceiq.cloudbreak.repository.HostMetadataRepository;
 import com.sequenceiq.cloudbreak.repository.InstanceMetaDataRepository;
 import com.sequenceiq.cloudbreak.repository.KerberosConfigRepository;
 import com.sequenceiq.cloudbreak.service.AuthorizationService;
-import com.sequenceiq.cloudbreak.service.CloudbreakServiceException;
-import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.DuplicateKeyValueException;
-import com.sequenceiq.cloudbreak.service.TlsSecurityService;
+import com.sequenceiq.cloudbreak.service.tls.TlsSecurityService;
 import com.sequenceiq.cloudbreak.service.blueprint.BlueprintService;
 import com.sequenceiq.cloudbreak.service.cluster.flow.ClusterTerminationService;
 import com.sequenceiq.cloudbreak.service.events.CloudbreakEventService;
 import com.sequenceiq.cloudbreak.service.hostgroup.HostGroupService;
-import com.sequenceiq.cloudbreak.service.messages.CloudbreakMessagesService;
+import com.sequenceiq.cloudbreak.message.CloudbreakMessagesService;
 import com.sequenceiq.cloudbreak.service.stack.StackService;
-import com.sequenceiq.cloudbreak.util.AmbariClientExceptionUtil;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariClientExceptionUtil;
 import com.sequenceiq.cloudbreak.util.JsonUtil;
 
 import groovyx.net.http.HttpResponseException;
@@ -173,7 +175,7 @@ public class AmbariClusterService implements ClusterService {
     private OrchestratorTypeResolver orchestratorTypeResolver;
 
     @Inject
-    private ClusterComponentConfigProvider clusterComponentConfigProvider;
+    private AmbariComponentConfigProvider ambariComponentConfigProvider;
 
     @Inject
     private AuthorizationService authorizationService;
@@ -207,7 +209,7 @@ public class AmbariClusterService implements ClusterService {
         generateSignKeys(cluster.getGateway());
         try {
             cluster = clusterRepository.save(cluster);
-            clusterComponentConfigProvider.store(components, cluster);
+            ambariComponentConfigProvider.store(components, cluster);
         } catch (DataIntegrityViolationException ex) {
             throw new DuplicateKeyValueException(APIResourceType.CLUSTER, cluster.getName(), ex);
         }
@@ -232,7 +234,7 @@ public class AmbariClusterService implements ClusterService {
     }
 
     private boolean isEmbeddedAmbariDB(List<ClusterComponent> components) {
-        AmbariDatabase ambariDatabase = clusterComponentConfigProvider.getComponent(components, AmbariDatabase.class, ComponentType.AMBARI_DATABASE_DETAILS);
+        AmbariDatabase ambariDatabase = ambariComponentConfigProvider.getComponent(components, AmbariDatabase.class, ComponentType.AMBARI_DATABASE_DETAILS);
         return ambariDatabase == null || DatabaseVendor.EMBEDDED.value().equals(ambariDatabase.getVendor());
     }
 
@@ -468,7 +470,7 @@ public class AmbariClusterService implements ClusterService {
     }
 
     private boolean withEmbeddedAmbariDB(Cluster cluster) {
-        AmbariDatabase ambariDB = clusterComponentConfigProvider.getAmbariDatabase(cluster.getId());
+        AmbariDatabase ambariDB = ambariComponentConfigProvider.getAmbariDatabase(cluster.getId());
         return ambariDB == null || DatabaseVendor.EMBEDDED.value().equals(ambariDB.getVendor());
     }
 
@@ -648,7 +650,7 @@ public class AmbariClusterService implements ClusterService {
         Blueprint blueprint = blueprintService.get(blueprintId);
         Stack stack = stackService.getByIdWithLists(stackId);
         Cluster cluster = getCluster(stack);
-        AmbariDatabase ambariDatabase = clusterComponentConfigProvider.getAmbariDatabase(cluster.getId());
+        AmbariDatabase ambariDatabase = ambariComponentConfigProvider.getAmbariDatabase(cluster.getId());
         if (ambariDatabase != null && !DatabaseVendor.EMBEDDED.value().equals(ambariDatabase.getVendor())) {
             throw new BadRequestException("Ambari doesn't support resetting external DB automatically. To reset Ambari Server schema you must first drop "
                 + "and then create it using DDL scripts from /var/lib/ambari-server/resources");
@@ -717,23 +719,23 @@ public class AmbariClusterService implements ClusterService {
                     "Cluster '%s' is currently in '%s' state. Upgrade requests to a cluster can only be made if the underlying stack is 'AVAILABLE'.",
                     stackId, stack.getStatus()));
             }
-            AmbariRepo ambariRepo = clusterComponentConfigProvider.getAmbariRepo(cluster.getId());
+            AmbariRepo ambariRepo = ambariComponentConfigProvider.getAmbariRepo(cluster.getId());
             if (ambariRepo == null) {
                 try {
-                    clusterComponentConfigProvider.store(new ClusterComponent(ComponentType.AMBARI_REPO_DETAILS,
+                    ambariComponentConfigProvider.store(new ClusterComponent(ComponentType.AMBARI_REPO_DETAILS,
                         new Json(ambariRepoUpgrade), stack.getCluster()));
                 } catch (JsonProcessingException ignored) {
                     throw new BadRequestException(String.format("Ambari repo details cannot be saved. %s", ambariRepoUpgrade));
                 }
             } else {
-                ClusterComponent component = clusterComponentConfigProvider.getComponent(cluster.getId(), ComponentType.AMBARI_REPO_DETAILS);
+                ClusterComponent component = ambariComponentConfigProvider.getComponent(cluster.getId(), ComponentType.AMBARI_REPO_DETAILS);
                 ambariRepo.setBaseUrl(ambariRepoUpgrade.getBaseUrl());
                 ambariRepo.setGpgKeyUrl(ambariRepoUpgrade.getGpgKeyUrl());
                 ambariRepo.setPredefined(false);
                 ambariRepo.setVersion(ambariRepoUpgrade.getVersion());
                 try {
                     component.setAttributes(new Json(ambariRepo));
-                    clusterComponentConfigProvider.store(component);
+                    ambariComponentConfigProvider.store(component);
                 } catch (JsonProcessingException ignored) {
                     throw new BadRequestException(String.format("Ambari repo details cannot be saved. %s", ambariRepoUpgrade));
                 }
@@ -761,15 +763,15 @@ public class AmbariClusterService implements ClusterService {
 
     private void createHDPRepoComponent(HDPRepo hdpRepoUpdate, Stack stack) {
         if (hdpRepoUpdate != null) {
-            HDPRepo hdpRepo = clusterComponentConfigProvider.getHDPRepo(stack.getCluster().getId());
+            HDPRepo hdpRepo = ambariComponentConfigProvider.getHDPRepo(stack.getCluster().getId());
             if (hdpRepo == null) {
                 try {
-                    clusterComponentConfigProvider.store(new ClusterComponent(ComponentType.HDP_REPO_DETAILS, new Json(hdpRepoUpdate), stack.getCluster()));
+                    ambariComponentConfigProvider.store(new ClusterComponent(ComponentType.HDP_REPO_DETAILS, new Json(hdpRepoUpdate), stack.getCluster()));
                 } catch (JsonProcessingException ignored) {
                     throw new BadRequestException(String.format("HDP Repo parameters cannot be converted. %s", hdpRepoUpdate));
                 }
             } else {
-                ClusterComponent component = clusterComponentConfigProvider.getComponent(stack.getCluster().getId(), ComponentType.HDP_REPO_DETAILS);
+                ClusterComponent component = ambariComponentConfigProvider.getComponent(stack.getCluster().getId(), ComponentType.HDP_REPO_DETAILS);
                 hdpRepo.setHdpVersion(hdpRepoUpdate.getHdpVersion());
                 hdpRepo.setVerify(hdpRepoUpdate.isVerify());
                 hdpRepo.setStack(hdpRepoUpdate.getStack());
@@ -777,7 +779,7 @@ public class AmbariClusterService implements ClusterService {
                 hdpRepo.setKnox(hdpRepoUpdate.getKnox());
                 try {
                     component.setAttributes(new Json(hdpRepo));
-                    clusterComponentConfigProvider.store(component);
+                    ambariComponentConfigProvider.store(component);
                 } catch (JsonProcessingException ignored) {
                     throw new BadRequestException(String.format("HDP Repo parameters cannot be converted. %s", hdpRepoUpdate));
                 }

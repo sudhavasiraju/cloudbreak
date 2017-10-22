@@ -1,8 +1,8 @@
 package com.sequenceiq.cloudbreak.core.bootstrap.service;
 
-import static com.sequenceiq.cloudbreak.core.bootstrap.service.ClusterDeletionBasedExitCriteriaModel.clusterDeletionBasedModel;
-import static com.sequenceiq.cloudbreak.service.PollingResult.EXIT;
-import static com.sequenceiq.cloudbreak.service.PollingResult.TIMEOUT;
+import static com.sequenceiq.cloudbreak.cluster.ClusterDeletionBasedExitCriteriaModel.clusterDeletionBasedModel;
+import static com.sequenceiq.cloudbreak.polling.PollingResult.EXIT;
+import static com.sequenceiq.cloudbreak.polling.PollingResult.TIMEOUT;
 import static java.util.Collections.singletonMap;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
@@ -20,10 +20,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.sequenceiq.cloudbreak.CloudbreakException;
 import com.sequenceiq.cloudbreak.cloud.scheduler.CancellationException;
+import com.sequenceiq.cloudbreak.common.model.OrchestratorType;
 import com.sequenceiq.cloudbreak.common.service.HostDiscoveryService;
 import com.sequenceiq.cloudbreak.common.type.ComponentType;
-import com.sequenceiq.cloudbreak.core.CloudbreakException;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.container.ContainerBootstrapApiCheckerTask;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.container.ContainerClusterAvailabilityCheckerTask;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.container.ContainerOrchestratorResolver;
@@ -45,12 +46,12 @@ import com.sequenceiq.cloudbreak.orchestrator.exception.CloudbreakOrchestratorEx
 import com.sequenceiq.cloudbreak.orchestrator.host.HostOrchestrator;
 import com.sequenceiq.cloudbreak.orchestrator.model.GatewayConfig;
 import com.sequenceiq.cloudbreak.orchestrator.model.Node;
+import com.sequenceiq.cloudbreak.polling.PollingResult;
+import com.sequenceiq.cloudbreak.polling.PollingService;
 import com.sequenceiq.cloudbreak.repository.OrchestratorRepository;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
-import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.GatewayConfigService;
-import com.sequenceiq.cloudbreak.service.PollingResult;
-import com.sequenceiq.cloudbreak.service.PollingService;
+import com.sequenceiq.cloudbreak.service.SaltComponentConfigProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -115,7 +116,7 @@ public class ClusterBootstrapper {
     private HostDiscoveryService hostDiscoveryService;
 
     @Inject
-    private ClusterComponentConfigProvider clusterComponentProvider;
+    private SaltComponentConfigProvider clusterComponentProvider;
 
     public void bootstrapMachines(Long stackId) throws CloudbreakException {
         Stack stack = stackRepository.findOneWithLists(stackId);

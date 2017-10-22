@@ -32,13 +32,13 @@ import com.sequenceiq.cloudbreak.cloud.model.HDPRepo;
 import com.sequenceiq.cloudbreak.cloud.model.Image;
 import com.sequenceiq.cloudbreak.cloud.model.StackTags;
 import com.sequenceiq.cloudbreak.common.type.ResourceType;
-import com.sequenceiq.cloudbreak.core.CloudbreakImageNotFoundException;
+import com.sequenceiq.cloudbreak.CloudbreakImageNotFoundException;
 import com.sequenceiq.cloudbreak.domain.InstanceGroup;
 import com.sequenceiq.cloudbreak.domain.Resource;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.domain.json.Json;
 import com.sequenceiq.cloudbreak.repository.HostMetadataRepository;
-import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.ComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.image.ImageService;
 
@@ -57,7 +57,7 @@ public class StackToJsonConverter extends AbstractConversionServiceAwareConverte
     private ComponentConfigProvider componentConfigProvider;
 
     @Inject
-    private ClusterComponentConfigProvider clusterComponentConfigProvider;
+    private AmbariComponentConfigProvider ambariComponentConfigProvider;
 
     @Inject
     private HostMetadataRepository hostMetadataRepository;
@@ -189,12 +189,12 @@ public class StackToJsonConverter extends AbstractConversionServiceAwareConverte
     private StackResponse convertComponentConfig(StackResponse stackJson, Stack source) {
         try {
             if (source.getCluster() != null) {
-                HDPRepo hdpRepo = clusterComponentConfigProvider.getHDPRepo(source.getCluster().getId());
+                HDPRepo hdpRepo = ambariComponentConfigProvider.getHDPRepo(source.getCluster().getId());
                 if (hdpRepo != null) {
                     stackJson.setHdpVersion(hdpRepo.getHdpVersion());
                 }
 
-                AmbariRepo ambariRepo = clusterComponentConfigProvider.getAmbariRepo(source.getCluster().getId());
+                AmbariRepo ambariRepo = ambariComponentConfigProvider.getAmbariRepo(source.getCluster().getId());
                 if (ambariRepo != null) {
                     stackJson.setAmbariVersion(ambariRepo.getVersion());
                 }

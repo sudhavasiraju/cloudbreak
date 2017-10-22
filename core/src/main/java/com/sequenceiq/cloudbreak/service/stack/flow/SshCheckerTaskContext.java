@@ -1,7 +1,7 @@
 package com.sequenceiq.cloudbreak.service.stack.flow;
 
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.service.StackContext;
+import com.sequenceiq.cloudbreak.context.StackContext;
 
 import net.schmizz.sshj.transport.verification.HostKeyVerifier;
 

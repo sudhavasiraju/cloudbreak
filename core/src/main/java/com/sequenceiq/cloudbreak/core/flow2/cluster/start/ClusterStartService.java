@@ -14,9 +14,8 @@ import com.sequenceiq.cloudbreak.core.flow2.stack.FlowMessageService;
 import com.sequenceiq.cloudbreak.core.flow2.stack.Msg;
 import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.domain.StackMinimal;
 import com.sequenceiq.cloudbreak.repository.StackUpdater;
-import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
 import com.sequenceiq.cloudbreak.service.cluster.flow.EmailSenderService;
 import com.sequenceiq.cloudbreak.util.StackUtil;
 
@@ -39,14 +38,14 @@ public class ClusterStartService {
     @Inject
     private StackUtil stackUtil;
 
-    public void startingCluster(StackMinimal stack) {
+    public void startingCluster(Stack stack, Cluster cluster) {
         clusterService.updateClusterStatusByStackId(stack.getId(), Status.START_IN_PROGRESS);
         stackUpdater.updateStackStatus(stack.getId(), DetailedStackStatus.CLUSTER_OPERATION, String.format("Starting the Ambari cluster. Ambari ip: %s",
                 stackUtil.extractAmbariIp(stack)));
         flowMessageService.fireEventAndLog(stack.getId(), Msg.AMBARI_CLUSTER_STARTING, Status.UPDATE_IN_PROGRESS.name(), stackUtil.extractAmbariIp(stack));
     }
 
-    public void clusterStartFinished(StackMinimal stack) {
+    public void clusterStartFinished(Stack stack) {
         Cluster cluster = clusterService.retrieveClusterByStackId(stack.getId());
         String ambariIp = stackUtil.extractAmbariIp(stack);
         cluster.setUpSince(new Date().getTime());

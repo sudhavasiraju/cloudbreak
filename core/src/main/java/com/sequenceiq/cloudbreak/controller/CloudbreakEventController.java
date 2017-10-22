@@ -9,6 +9,7 @@ import com.sequenceiq.cloudbreak.api.endpoint.EventEndpoint;
 import com.sequenceiq.cloudbreak.api.model.CloudbreakEventsJson;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.facade.CloudbreakEventsFacade;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 
 @Component
 public class CloudbreakEventController implements EventEndpoint {

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sequenceiq.cloudbreak.domain.Resource;
+import com.sequenceiq.cloudbreak.task.CloudbreakServiceException;
 
 public class BuildStackFailureException extends CloudbreakServiceException {
 

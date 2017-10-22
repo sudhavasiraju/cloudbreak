@@ -36,7 +36,7 @@ import com.sequenceiq.cloudbreak.cloud.model.HDPRepo;
 import com.sequenceiq.cloudbreak.cloud.model.Image;
 import com.sequenceiq.cloudbreak.cloud.model.StackTemplate;
 import com.sequenceiq.cloudbreak.common.type.ResourceType;
-import com.sequenceiq.cloudbreak.core.CloudbreakImageNotFoundException;
+import com.sequenceiq.cloudbreak.CloudbreakImageNotFoundException;
 import com.sequenceiq.cloudbreak.domain.Cluster;
 import com.sequenceiq.cloudbreak.domain.FailurePolicy;
 import com.sequenceiq.cloudbreak.domain.Network;
@@ -44,7 +44,7 @@ import com.sequenceiq.cloudbreak.domain.Orchestrator;
 import com.sequenceiq.cloudbreak.domain.Resource;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.domain.StackAuthentication;
-import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
+import com.sequenceiq.cloudbreak.cluster.ambari.AmbariComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.ComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.image.ImageService;
 
@@ -60,7 +60,7 @@ public class StackToJsonConverterTest extends AbstractEntityConverterTest<Stack>
     private ImageService imageService;
 
     @Mock
-    private ClusterComponentConfigProvider clusterComponentConfigProvider;
+    private AmbariComponentConfigProvider ambariComponentConfigProvider;
 
     @Mock
     private ComponentConfigProvider componentConfigProvider;
@@ -72,9 +72,9 @@ public class StackToJsonConverterTest extends AbstractEntityConverterTest<Stack>
         when(imageService.getImage(anyLong())).thenReturn(new Image("testimage", new HashMap<>()));
         when(componentConfigProvider.getCloudbreakDetails(anyLong())).thenReturn(new CloudbreakDetails("version"));
         when(componentConfigProvider.getStackTemplate(anyLong())).thenReturn(new StackTemplate("{}", "version"));
-        when(clusterComponentConfigProvider.getHDPRepo(anyLong())).thenReturn(new HDPRepo());
-        when(clusterComponentConfigProvider.getAmbariDatabase(anyLong())).thenReturn(new AmbariDatabase());
-        when(clusterComponentConfigProvider.getAmbariRepo(anyLong())).thenReturn(new AmbariRepo());
+        when(ambariComponentConfigProvider.getHDPRepo(anyLong())).thenReturn(new HDPRepo());
+        when(ambariComponentConfigProvider.getAmbariDatabase(anyLong())).thenReturn(new AmbariDatabase());
+        when(ambariComponentConfigProvider.getAmbariRepo(anyLong())).thenReturn(new AmbariRepo());
     }
 
     @Test

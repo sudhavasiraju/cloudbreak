@@ -8,7 +8,7 @@ import com.sequenceiq.cloudbreak.api.model.Status;
 import com.sequenceiq.cloudbreak.core.flow2.stack.FlowMessageService;
 import com.sequenceiq.cloudbreak.core.flow2.stack.Msg;
 import com.sequenceiq.cloudbreak.domain.Cluster;
-import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
+import com.sequenceiq.cloudbreak.cluster.ClusterService;
 
 @Service
 public class ClusterCredentialChangeService {
@@ -22,15 +22,13 @@ public class ClusterCredentialChangeService {
         flowMessageService.fireEventAndLog(stackId, Msg.AMBARI_CLUSTER_CHANGING_CREDENTIAL, Status.UPDATE_IN_PROGRESS.name());
     }
 
-    public void finishCredentialReplace(Long stackId, Long clusterId, String user, String password) {
-        Cluster cluster = clusterService.getById(clusterId);
+    public void finishCredentialReplace(Long stackId, Cluster cluster, String user, String password) {
         cluster.setUserName(user);
         cluster.setPassword(password);
         finishCredentialChange(stackId, cluster);
     }
 
-    public void finishCredentialUpdate(Long stackId, Long clusterId, String password) {
-        Cluster cluster = clusterService.getById(clusterId);
+    public void finishCredentialUpdate(Long stackId, Cluster cluster, String password) {
         cluster.setPassword(password);
         finishCredentialChange(stackId, cluster);
     }

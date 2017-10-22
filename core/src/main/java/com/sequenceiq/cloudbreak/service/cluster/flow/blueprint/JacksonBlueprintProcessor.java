@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sequenceiq.cloudbreak.cluster.ambari.blueprint.BlueprintProcessor;
+import com.sequenceiq.cloudbreak.cluster.ambari.blueprint.provider.BlueprintProcessingException;
+import com.sequenceiq.cloudbreak.cluster.model.BlueprintConfigurationEntry;
 import com.sequenceiq.cloudbreak.util.JsonUtil;
 
 @Component

@@ -9,13 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.sequenceiq.cloudbreak.core.CloudbreakException;
-import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorType;
+import com.sequenceiq.cloudbreak.CloudbreakException;
+import com.sequenceiq.cloudbreak.common.model.OrchestratorType;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorTypeResolver;
 import com.sequenceiq.cloudbreak.domain.InstanceGroup;
 import com.sequenceiq.cloudbreak.domain.InstanceMetaData;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.domain.StackMinimal;
 import com.sequenceiq.cloudbreak.orchestrator.model.Node;
 import com.sequenceiq.cloudbreak.repository.InstanceMetaDataRepository;
 
@@ -40,29 +39,21 @@ public class StackUtil {
         return agents;
     }
 
-    public String extractAmbariIp(StackMinimal stack) {
-        return extractAmbariIp(stack.getId(), stack.getOrchestrator().getType(), stack.getCluster() != null ? stack.getCluster().getAmbariIp() : null);
-    }
-
     public String extractAmbariIp(Stack stack) {
-        return extractAmbariIp(stack.getId(), stack.getOrchestrator().getType(), stack.getCluster() != null ? stack.getCluster().getAmbariIp() : null);
-    }
-
-    private String extractAmbariIp(long stackId, String orchestratorName, String ambariIp) {
-        String result = null;
+        String ambariIp = null;
         try {
-            OrchestratorType orchestratorType = orchestratorTypeResolver.resolveType(orchestratorName);
+            OrchestratorType orchestratorType = orchestratorTypeResolver.resolveType(stack.getOrchestrator().getType());
             if (orchestratorType != null && orchestratorType.containerOrchestrator()) {
-                result = ambariIp;
+                ambariIp = stack.getCluster().getAmbariIp();
             } else {
-                InstanceMetaData gatewayInstance = instanceMetaDataRepository.getPrimaryGatewayInstanceMetadata(stackId);
-                if (gatewayInstance != null) {
-                    result = gatewayInstance.getPublicIpWrapper();
+                InstanceMetaData gatewayInstance = instanceMetaDataRepository.getPrimaryGatewayInstanceMetadata(stack.getId());
+                if (stack.getCluster() != null && stack.getCluster().getAmbariIp() != null && gatewayInstance != null) {
+                    ambariIp = gatewayInstance.getPublicIpWrapper();
                 }
             }
         } catch (CloudbreakException ex) {
             LOGGER.error("Could not resolve orchestrator type: ", ex);
         }
-        return result;
+        return ambariIp;
     }
 }

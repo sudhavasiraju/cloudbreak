@@ -1,0 +1,34 @@
+apply plugin: 'java'
+apply plugin: 'info.solidsoft.pitest'
+
+repositories {
+    maven { url 'http://repo.spring.io/libs-release' }
+    mavenCentral()
+}
+
+jar {
+    baseName = 'core-repository'
+}
+
+dependencies {
+
+    compile project(':cloud-reactor')
+    compile project(':core-model')
+    compile project(':orchestrator-api')
+    compile project(':structuredevent-model')
+
+    compile group: 'org.springframework.boot',          name: 'spring-boot-starter-data-jpa',   version: springBootVersion
+    compile group: 'org.springframework', name: 'spring-messaging', version: springFrameworkVersion
+
+    compile (group: 'org.springframework.statemachine', name: 'spring-statemachine-core',       version: '1.0.1.RELEASE') { exclude group: 'org.springframework' }
+    compile group: 'org.slf4j',                         name: 'slf4j-api',                      version: slf4jApiVersion
+    testCompile group: 'org.springframework.boot',      name: 'spring-boot-starter-test',       version: springBootVersion
+    testCompile (group: 'junit',                        name: 'junit',                          version: '4+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile ('org.mockito:mockito-core:1+') {
+        exclude group: 'org.hamcrest'
+    }
+    testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+
+}

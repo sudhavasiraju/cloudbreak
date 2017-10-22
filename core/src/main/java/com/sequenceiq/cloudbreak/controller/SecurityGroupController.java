@@ -14,6 +14,7 @@ import com.sequenceiq.cloudbreak.api.model.SecurityGroupResponse;
 import com.sequenceiq.cloudbreak.common.model.user.IdentityUser;
 import com.sequenceiq.cloudbreak.common.type.ResourceEvent;
 import com.sequenceiq.cloudbreak.domain.SecurityGroup;
+import com.sequenceiq.cloudbreak.service.user.AuthenticatedUserService;
 import com.sequenceiq.cloudbreak.service.securitygroup.DefaultSecurityGroupCreator;
 import com.sequenceiq.cloudbreak.service.securitygroup.SecurityGroupService;
 

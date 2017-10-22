@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.sequenceiq.cloudbreak.domain.Stack;
-import com.sequenceiq.cloudbreak.service.StackContext;
+import com.sequenceiq.cloudbreak.context.StackContext;
 
 public class ConsulContext extends StackContext {
 

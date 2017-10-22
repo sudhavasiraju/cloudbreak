@@ -4,11 +4,11 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import com.sequenceiq.cloudbreak.cloud.ReactorEventHandler;
 import com.sequenceiq.cloudbreak.core.cluster.AmbariClusterUpscaleService;
 import com.sequenceiq.cloudbreak.reactor.api.event.EventSelectorUtil;
 import com.sequenceiq.cloudbreak.reactor.api.event.cluster.UpscaleClusterRequest;
 import com.sequenceiq.cloudbreak.reactor.api.event.cluster.UpscaleClusterResult;
-import com.sequenceiq.cloudbreak.reactor.handler.ReactorEventHandler;
 
 import reactor.bus.Event;
 import reactor.bus.EventBus;
