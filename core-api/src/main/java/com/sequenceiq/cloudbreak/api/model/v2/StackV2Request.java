@@ -11,10 +11,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sequenceiq.cloudbreak.api.model.FailurePolicyRequest;
 import com.sequenceiq.cloudbreak.api.model.JsonEntity;
-import com.sequenceiq.cloudbreak.api.model.OnFailureAction;
-import com.sequenceiq.cloudbreak.api.model.OrchestratorRequest;
 import com.sequenceiq.cloudbreak.api.model.StackAuthenticationRequest;
 import com.sequenceiq.cloudbreak.doc.ModelDescriptions.StackModelDescription;
 
@@ -28,83 +25,77 @@ public class StackV2Request implements JsonEntity {
     @Pattern(regexp = "([a-z][-a-z0-9]*[a-z0-9])",
             message = "The name can only contain lowercase alphanumeric characters and hyphens and has start with an alphanumeric character")
     @NotNull
-    @ApiModelProperty(value = StackModelDescription.STACK_NAME, required = true)
+    @ApiModelProperty(value = StackModelDescription.STACK_NAME, required = true, position = 0)
     private String name;
 
-    @ApiModelProperty(StackModelDescription.AVAILABILITY_ZONE)
-    private String availabilityZone;
-
-    @ApiModelProperty(StackModelDescription.REGION)
-    private String region;
-
-    @ApiModelProperty(StackModelDescription.PLATFORM_VARIANT)
-    private String platformVariant;
-
-    @ApiModelProperty(StackModelDescription.FAILURE_ACTION)
-    private OnFailureAction onFailureAction = OnFailureAction.DO_NOTHING;
-
-    @ApiModelProperty(StackModelDescription.AMBARI_VERSION)
-    private String ambariVersion;
-
-    @ApiModelProperty(StackModelDescription.HDP_VERSION)
-    private String hdpVersion;
-
-    @ApiModelProperty(StackModelDescription.PARAMETERS)
-    private Map<String, String> parameters = new HashMap<>();
-
-    @ApiModelProperty(StackModelDescription.CUSTOM_DOMAIN)
-    private String customDomain;
-
-    @ApiModelProperty(StackModelDescription.CUSTOM_HOSTNAME)
-    private String customHostname;
-
-    @ApiModelProperty(StackModelDescription.CLUSTER_NAME_AS_SUBDOMAIN)
-    private boolean clusterNameAsSubdomain;
-
-    @ApiModelProperty(StackModelDescription.HOSTGROUP_NAME_AS_HOSTNAME)
-    private boolean hostgroupNameAsHostname;
-
-    @ApiModelProperty(StackModelDescription.APPLICATION_TAGS)
-    private Map<String, String> applicationTags = new HashMap<>();
-
-    @ApiModelProperty(StackModelDescription.USERDEFINED_TAGS)
-    private Map<String, String> userDefinedTags = new HashMap<>();
-
-    @ApiModelProperty(StackModelDescription.DEFAULT_TAGS)
-    private Map<String, String> defaultTags = new HashMap<>();
-
-    @Valid
-    @ApiModelProperty(StackModelDescription.ORCHESTRATOR)
-    private OrchestratorRequest orchestrator;
-
-    @Valid
-    @ApiModelProperty(value = StackModelDescription.INSTANCE_GROUPS, required = true)
-    private List<InstanceGroupV2Request> instanceGroups = new ArrayList<>();
-
-    @ApiModelProperty(StackModelDescription.FAILURE_POLICY)
-    private FailurePolicyRequest failurePolicy;
-
-    @ApiModelProperty(StackModelDescription.AUTHENTICATION)
-    private StackAuthenticationRequest stackAuthentication;
-
-    @ApiModelProperty(StackModelDescription.NETWORK)
-    private NetworkV2Request network;
-
-    @ApiModelProperty(StackModelDescription.IMAGE_CATALOG)
-    private String imageCatalog;
-
-    @ApiModelProperty(StackModelDescription.IMAGE_ID)
-    private String imageId;
-
-    @ApiModelProperty(StackModelDescription.FLEX_ID)
-    private Long flexId;
-
-    @ApiModelProperty(StackModelDescription.CREDENTIAL_NAME)
+    @ApiModelProperty(value = StackModelDescription.CREDENTIAL_NAME, position = 1)
     private String credentialName;
 
+    @ApiModelProperty(value = StackModelDescription.REGION, position = 2)
+    private String region;
+
+    @ApiModelProperty(value = StackModelDescription.AVAILABILITY_ZONE, position = 3)
+    private String availabilityZone;
+
+    @ApiModelProperty(value = StackModelDescription.AUTHENTICATION, position = 4)
+    private StackAuthenticationRequest stackAuthentication;
+
+    @ApiModelProperty(value = StackModelDescription.PLATFORM_VARIANT, position = 5)
+    private String platformVariant;
+
+    @ApiModelProperty(value = StackModelDescription.IMAGE_CATALOG, position = 6)
+    private String imageCatalog;
+
+    @ApiModelProperty(value = StackModelDescription.IMAGE_ID, position = 7)
+    private String imageId;
+
+    @ApiModelProperty(value = StackModelDescription.NETWORK, position = 8)
+    private NetworkV2Request network;
+
     @Valid
-    @ApiModelProperty(StackModelDescription.CLUSTER_REQUEST)
+    @ApiModelProperty(value = StackModelDescription.ORCHESTRATOR, position = 9)
+    private OrchestratorV2Request orchestrator;
+
+    @Valid
+    @ApiModelProperty(value = StackModelDescription.INSTANCE_GROUPS, required = true, position = 10)
+    private List<InstanceGroupV2Request> instanceGroups = new ArrayList<>();
+
+    @Valid
+    @ApiModelProperty(value = StackModelDescription.CLUSTER_REQUEST, position = 11)
     private ClusterV2Request clusterRequest;
+
+    @ApiModelProperty(value = StackModelDescription.PARAMETERS, position = 12)
+    private Map<String, String> parameters = new HashMap<>();
+
+    @ApiModelProperty(value = StackModelDescription.APPLICATION_TAGS, position = 13)
+    private Map<String, String> applicationTags = new HashMap<>();
+
+    @ApiModelProperty(value = StackModelDescription.USERDEFINED_TAGS, position = 14)
+    private Map<String, String> userDefinedTags = new HashMap<>();
+
+    @ApiModelProperty(value = StackModelDescription.DEFAULT_TAGS, position = 15)
+    private Map<String, String> defaultTags = new HashMap<>();
+
+    @ApiModelProperty(value = StackModelDescription.FLEX_ID, position = 16)
+    private Long flexId;
+
+    @ApiModelProperty(value = StackModelDescription.AMBARI_VERSION, position = 17)
+    private String ambariVersion;
+
+    @ApiModelProperty(value = StackModelDescription.HDP_VERSION, position = 18)
+    private String hdpVersion;
+
+    @ApiModelProperty(value = StackModelDescription.CUSTOM_DOMAIN, position = 19)
+    private String customDomain;
+
+    @ApiModelProperty(value = StackModelDescription.CUSTOM_HOSTNAME, position = 20)
+    private String customHostname;
+
+    @ApiModelProperty(value = StackModelDescription.CLUSTER_NAME_AS_SUBDOMAIN, position = 21)
+    private boolean clusterNameAsSubdomain;
+
+    @ApiModelProperty(value = StackModelDescription.HOSTGROUP_NAME_AS_HOSTNAME, position = 22)
+    private boolean hostgroupNameAsHostname;
 
     @ApiModelProperty(hidden = true)
     private String owner;
@@ -112,19 +103,11 @@ public class StackV2Request implements JsonEntity {
     @ApiModelProperty(hidden = true)
     private String account;
 
-    public FailurePolicyRequest getFailurePolicy() {
-        return failurePolicy;
-    }
-
-    public void setFailurePolicy(FailurePolicyRequest failurePolicy) {
-        this.failurePolicy = failurePolicy;
-    }
-
-    public OrchestratorRequest getOrchestrator() {
+    public OrchestratorV2Request getOrchestrator() {
         return orchestrator;
     }
 
-    public void setOrchestrator(OrchestratorRequest orchestrator) {
+    public void setOrchestrator(OrchestratorV2Request orchestrator) {
         this.orchestrator = orchestrator;
     }
 
@@ -198,14 +181,6 @@ public class StackV2Request implements JsonEntity {
 
     public void setCredentialName(String credentialName) {
         this.credentialName = credentialName;
-    }
-
-    public OnFailureAction getOnFailureAction() {
-        return onFailureAction;
-    }
-
-    public void setOnFailureAction(OnFailureAction onFailureAction) {
-        this.onFailureAction = onFailureAction;
     }
 
     public String getName() {

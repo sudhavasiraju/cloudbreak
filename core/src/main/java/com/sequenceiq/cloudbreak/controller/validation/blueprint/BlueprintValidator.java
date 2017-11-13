@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.sequenceiq.cloudbreak.controller.BadRequestException;
 import com.sequenceiq.cloudbreak.domain.Blueprint;
 import com.sequenceiq.cloudbreak.domain.HostGroup;
@@ -57,8 +58,12 @@ public class BlueprintValidator {
         Set<String> hostGroupsInRequest = getHostGroupsFromRequest(hostGroups);
         Set<String> hostGroupsInBlueprint = getHostGroupsFromBlueprint(hostGroupsNode);
 
-        if (!hostGroupsInRequest.containsAll(hostGroupsInBlueprint) || !hostGroupsInBlueprint.containsAll(hostGroupsInRequest)) {
-            throw new BadRequestException("The host groups in the blueprint must match the hostgroups in the request.");
+        if (!hostGroupsInRequest.containsAll(hostGroupsInBlueprint)) {
+            throw new BadRequestException(String.format("One or more group definition are missing in the request. Missing groups are: %s",
+                    Sets.difference(hostGroupsInBlueprint, hostGroupsInRequest).toString()));
+        } else if (!hostGroupsInBlueprint.containsAll(hostGroupsInRequest)) {
+            throw new BadRequestException(String.format("One or more group definition are missing in the request. Missing groups are: %s",
+                    Sets.difference(hostGroupsInRequest, hostGroupsInBlueprint).toString()));
         }
 
         if (!instanceGroups.isEmpty()) {
@@ -66,13 +71,13 @@ public class BlueprintValidator {
             for (HostGroup hostGroup : hostGroups) {
                 String instanceGroupName = hostGroup.getConstraint().getInstanceGroup().getGroupName();
                 if (instanceGroupNames.contains(instanceGroupName)) {
-                    throw new BadRequestException(String.format(
-                            "Instance group '%s' is assigned to more than one hostgroup.", instanceGroupName));
+                    throw new BadRequestException(String.format("Instance group '%s' is assigned to more than one hostgroup.", instanceGroupName));
                 }
                 instanceGroupNames.add(instanceGroupName);
             }
             if (instanceGroups.size() < hostGroupsInRequest.size()) {
-                throw new BadRequestException("Each host group must have an instance group");
+                throw new BadRequestException(String.format("There are [%s] hostgroup definition in the request but only [%s] group available.",
+                        hostGroupsInRequest.size(), instanceGroups.size()));
             }
         }
     }

@@ -14,8 +14,11 @@ import com.sequenceiq.cloudbreak.api.model.ClusterRequest;
 import com.sequenceiq.cloudbreak.api.model.HostGroupRequest;
 import com.sequenceiq.cloudbreak.api.model.InstanceGroupRequest;
 import com.sequenceiq.cloudbreak.api.model.NetworkRequest;
+import com.sequenceiq.cloudbreak.api.model.OnFailureAction;
+import com.sequenceiq.cloudbreak.api.model.OrchestratorRequest;
 import com.sequenceiq.cloudbreak.api.model.StackRequest;
 import com.sequenceiq.cloudbreak.api.model.v2.InstanceGroupV2Request;
+import com.sequenceiq.cloudbreak.api.model.v2.OrchestratorV2Request;
 import com.sequenceiq.cloudbreak.api.model.v2.StackV2Request;
 import com.sequenceiq.cloudbreak.converter.AbstractConversionServiceAwareConverter;
 
@@ -36,7 +39,7 @@ public class StackV2RequestToStackRequestConverter extends AbstractConversionSer
         stackRequest.setAvailabilityZone(source.getAvailabilityZone());
         stackRequest.setRegion(source.getRegion());
         stackRequest.setPlatformVariant(source.getPlatformVariant());
-        stackRequest.setOnFailureAction(source.getOnFailureAction());
+        stackRequest.setOnFailureAction(OnFailureAction.DO_NOTHING);
         stackRequest.setAmbariVersion(source.getAmbariVersion());
         stackRequest.setHdpVersion(source.getHdpVersion());
         stackRequest.setParameters(source.getParameters());
@@ -47,13 +50,13 @@ public class StackV2RequestToStackRequestConverter extends AbstractConversionSer
         stackRequest.setApplicationTags(source.getApplicationTags());
         stackRequest.setDefaultTags(source.getDefaultTags());
         stackRequest.setUserDefinedTags(source.getUserDefinedTags());
-        stackRequest.setOrchestrator(source.getOrchestrator());
+        stackRequest.setOrchestrator(conversionService.convert(getOrchestrator(source.getOrchestrator()), OrchestratorRequest.class));
         stackRequest.setInstanceGroups(new ArrayList<>());
         for (InstanceGroupV2Request instanceGroupV2Request : source.getInstanceGroups()) {
             InstanceGroupRequest convert = conversionService.convert(instanceGroupV2Request, InstanceGroupRequest.class);
             stackRequest.getInstanceGroups().add(convert);
         }
-        stackRequest.setFailurePolicy(source.getFailurePolicy());
+        stackRequest.setFailurePolicy(null);
         stackRequest.setStackAuthentication(source.getStackAuthentication());
 
         stackRequest.setNetwork(conversionService.convert(source.getNetwork(), NetworkRequest.class));
@@ -74,5 +77,9 @@ public class StackV2RequestToStackRequestConverter extends AbstractConversionSer
             stackRequest.getClusterRequest().setName(source.getName());
         }
         return stackRequest;
+    }
+
+    private OrchestratorV2Request getOrchestrator(OrchestratorV2Request source) {
+        return source == null ? new OrchestratorV2Request() : source;
     }
 }

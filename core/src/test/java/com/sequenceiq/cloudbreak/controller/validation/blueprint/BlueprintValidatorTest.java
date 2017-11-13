@@ -96,7 +96,7 @@ public class BlueprintValidatorTest {
         JsonNode blueprintJsonTree = createJsonTree();
         BDDMockito.given(objectMapper.readTree(BLUEPRINT_STRING)).willReturn(blueprintJsonTree);
         thrown.expect(BadRequestException.class);
-        thrown.expectMessage("The host groups in the blueprint must match the hostgroups in the request.");
+        thrown.expectMessage("One or more group definition are missing in the request. Missing groups are: [group3]");
         // WHEN
         underTest.validateBlueprintForStack(blueprint, hostGroups, instanceGroups);
         // THEN throw exception
@@ -128,7 +128,7 @@ public class BlueprintValidatorTest {
         JsonNode blueprintJsonTree = createJsonTreeWithTooMuchGroup();
         BDDMockito.given(objectMapper.readTree(BLUEPRINT_STRING)).willReturn(blueprintJsonTree);
         thrown.expect(BadRequestException.class);
-        thrown.expectMessage("The host groups in the blueprint must match the hostgroups in the request.");
+        thrown.expectMessage("One or more group definition are missing in the request. Missing groups are: [group4]");
         // WHEN
         underTest.validateBlueprintForStack(blueprint, hostGroups, instanceGroups);
         // THEN throw exception
@@ -143,7 +143,7 @@ public class BlueprintValidatorTest {
         JsonNode blueprintJsonTree = createJsonTreeWithNotEnoughGroup();
         BDDMockito.given(objectMapper.readTree(BLUEPRINT_STRING)).willReturn(blueprintJsonTree);
         thrown.expect(BadRequestException.class);
-        thrown.expectMessage("The host groups in the blueprint must match the hostgroups in the request.");
+        thrown.expectMessage("One or more group definition are missing in the request. Missing groups are: [group3]");
         // WHEN
         underTest.validateBlueprintForStack(blueprint, hostGroups, instanceGroups);
         // THEN throw exception
