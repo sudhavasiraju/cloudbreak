@@ -40,10 +40,10 @@ public final class ServiceTestUtils {
     public static Blueprint createBlueprint(String owner, String account) {
         Blueprint blueprint = new Blueprint();
         blueprint.setId(1L);
-        blueprint.setAmbariName("test-blueprint");
+        blueprint.setAmbariName("test-validation");
         blueprint.setBlueprintText("dummyText");
         blueprint.setHostGroupCount(3);
-        blueprint.setDescription("test blueprint");
+        blueprint.setDescription("test validation");
         blueprint.setName("multi-node-hdfs-yarn");
         blueprint.setOwner(owner);
         blueprint.setAccount(account);

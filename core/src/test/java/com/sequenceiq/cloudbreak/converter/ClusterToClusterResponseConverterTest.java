@@ -33,9 +33,9 @@ import com.sequenceiq.cloudbreak.api.model.ClusterResponse;
 import com.sequenceiq.cloudbreak.api.model.ConfigStrategy;
 import com.sequenceiq.cloudbreak.api.model.RDSConfigJson;
 import com.sequenceiq.cloudbreak.api.model.RDSConfigRequest;
-import com.sequenceiq.cloudbreak.controller.validation.blueprint.BlueprintValidator;
-import com.sequenceiq.cloudbreak.controller.validation.blueprint.StackServiceComponentDescriptor;
-import com.sequenceiq.cloudbreak.controller.validation.blueprint.StackServiceComponentDescriptors;
+import com.sequenceiq.cloudbreak.blueprint.validation.BlueprintValidator;
+import com.sequenceiq.cloudbreak.blueprint.validation.StackServiceComponentDescriptor;
+import com.sequenceiq.cloudbreak.blueprint.validation.StackServiceComponentDescriptors;
 import com.sequenceiq.cloudbreak.core.CloudbreakException;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorType;
 import com.sequenceiq.cloudbreak.core.bootstrap.service.OrchestratorTypeResolver;
@@ -48,7 +48,7 @@ import com.sequenceiq.cloudbreak.domain.Orchestrator;
 import com.sequenceiq.cloudbreak.domain.RDSConfig;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariViewProvider;
+import com.sequenceiq.cloudbreak.service.cluster.ambari.AmbariViewProvider;
 import com.sequenceiq.cloudbreak.service.rdsconfig.RdsConfigService;
 import com.sequenceiq.cloudbreak.util.StackUtil;
 
@@ -127,7 +127,7 @@ public class ClusterToClusterResponseConverterTest extends AbstractEntityConvert
         // THEN
         assertEquals(1L, (long) result.getId());
         assertAllFieldsNotNull(result, Lists.newArrayList("cluster", "ambariStackDetails", "rdsConfigId", "blueprintCustomProperties",
-                "blueprint", "rdsConfigs", "ldapConfig", "exposedKnoxServices", "customContainers",
+                "validation", "rdsConfigs", "ldapConfig", "exposedKnoxServices", "customContainers",
                 "ambariRepoDetailsJson", "ambariDatabaseDetails", "creationFinished", "kerberosResponse"));
     }
 

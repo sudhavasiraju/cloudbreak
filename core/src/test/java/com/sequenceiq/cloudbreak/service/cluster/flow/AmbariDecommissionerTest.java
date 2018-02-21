@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.sequenceiq.cloudbreak.common.type.HostMetadataState;
 import com.sequenceiq.cloudbreak.domain.HostMetadata;
+import com.sequenceiq.cloudbreak.service.cluster.ambari.AmbariDecommissioner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmbariDecommissionerTest {

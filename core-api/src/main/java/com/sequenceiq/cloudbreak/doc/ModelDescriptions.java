@@ -19,13 +19,13 @@ public class ModelDescriptions {
     }
 
     public static class BlueprintModelDescription {
-        public static final String URL = "url source of an ambari blueprint, set this or the ambariBlueprint field";
-        public static final String BLUEPRINT_NAME = "gathered from blueprintName field from the blueprint JSON";
-        public static final String AMBARI_BLUEPRINT = "ambari blueprint JSON, set this or the url field";
+        public static final String URL = "url source of an ambari validation, set this or the ambariBlueprint field";
+        public static final String BLUEPRINT_NAME = "gathered from blueprintName field from the validation JSON";
+        public static final String AMBARI_BLUEPRINT = "ambari validation JSON, set this or the url field";
         public static final String HOST_GROUP_COUNT = "number of host groups";
-        public static final String STATUS = "status of the blueprint";
-        public static final String INPUTS = "input parameters of the blueprint";
-        public static final String BLUEPRINT_PROPERTIES = "properties to extend the blueprint with";
+        public static final String STATUS = "status of the validation";
+        public static final String INPUTS = "input parameters of the validation";
+        public static final String BLUEPRINT_PROPERTIES = "properties to extend the validation with";
     }
 
     public static class CredentialModelDescription {
@@ -75,8 +75,8 @@ public class ModelDescriptions {
     }
 
     public static class RecommendationRequestModelDescription {
-        public static final String BLUEPRINT_NAME = "name that could indentify an existing blueprint";
-        public static final String BLUEPRINT_ID = "id that could indentify an existing blueprint";
+        public static final String BLUEPRINT_NAME = "name that could indentify an existing validation";
+        public static final String BLUEPRINT_ID = "id that could indentify an existing validation";
     }
 
     public static class StackModelDescription {
@@ -157,18 +157,18 @@ public class ModelDescriptions {
         public static final String STATUS_REASON = "status message of the cluster";
         public static final String CLUSTER_NAME = "name of the cluster";
         public static final String CLUSTER_ID = "id of the cluster";
-        public static final String BLUEPRINT_ID = "blueprint id for the cluster";
-        public static final String BLUEPRINT_NAME = "blueprint name for the cluster";
-        public static final String BLUEPRINT = "blueprint for the cluster";
-        public static final String VALIDATE_BLUEPRINT = "validate blueprint";
+        public static final String BLUEPRINT_ID = "validation id for the cluster";
+        public static final String BLUEPRINT_NAME = "validation name for the cluster";
+        public static final String BLUEPRINT = "validation for the cluster";
+        public static final String VALIDATE_BLUEPRINT = "validate validation";
         public static final String HOURS = "duration - how long the cluster is running in hours";
         public static final String MINUTES = "duration - how long the cluster is running in minutes (minus hours)";
         public static final String EMAIL_TO = "send email to the requested address";
         public static final String EMAIL_NEEDED = "send email about the result of the cluster installation";
         public static final String SERVICE_ENDPOINT_MAP = "most important services in the cluster";
         public static final String CONFIG_STRATEGY = "config recommendation strategy";
-        public static final String BLUEPRINT_INPUTS = "blueprint inputs in the cluster";
-        public static final String BLUEPRINT_CUSTOM_PROPERTIES = "blueprint custom properties";
+        public static final String BLUEPRINT_INPUTS = "validation inputs in the cluster";
+        public static final String BLUEPRINT_CUSTOM_PROPERTIES = "validation custom properties";
         public static final String CUSTOM_CONTAINERS = "custom containers";
         public static final String CUSTOM_QUEUE = "custom queue for yarn orchestrator";
         public static final String EXECUTOR_TYPE = "executor type of cluster";
@@ -361,8 +361,8 @@ public class ModelDescriptions {
         public static final String INSTANCE_HOURS = "hours since the instance is running";
         public static final String INSTANCE_TYPE = "type of instance";
         public static final String INSTANCE_GROUP = "group name of instance";
-        public static final String BLUEPRINT_ID = "id of the blueprint";
-        public static final String BLUEPRINT_NAME = "name of the blueprint";
+        public static final String BLUEPRINT_ID = "id of the validation";
+        public static final String BLUEPRINT_NAME = "name of the validation";
         public static final String DURATION = "time since the instances are running in millisec";
         public static final String INSTANCE_NUMBER = "number of instances running";
         public static final String PEAK = "maximum number of instances running";

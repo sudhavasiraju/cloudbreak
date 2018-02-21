@@ -28,7 +28,7 @@ import com.sequenceiq.cloudbreak.domain.HostMetadata;
 import com.sequenceiq.cloudbreak.domain.Orchestrator;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
-import com.sequenceiq.cloudbreak.service.cluster.flow.AmbariClusterConnector;
+import com.sequenceiq.cloudbreak.service.cluster.ambari.AmbariClusterConnector;
 import com.sequenceiq.cloudbreak.service.cluster.flow.RecipeEngine;
 import com.sequenceiq.cloudbreak.service.hostgroup.HostGroupService;
 import com.sequenceiq.cloudbreak.service.stack.InstanceMetadataService;
@@ -97,7 +97,7 @@ public class AmbariClusterUpscaleService {
         }
         clusterService.updateHostCountWithAdjustment(stack.getCluster().getId(), hostGroupName, allHosts.size());
         instanceMetadataService.updateInstanceStatus(stack.getInstanceGroups(), InstanceStatus.UNREGISTERED, allHosts);
-        ambariClusterConnector.waitForAmbariHosts(stackService.getByIdWithLists(stackId));
+        ambariClusterConnector.waitForHosts(stackService.getByIdWithLists(stackId));
     }
 
     public void uploadRecipesOnNewHosts(Long stackId, String hostGroupName) throws CloudbreakException {
@@ -114,7 +114,7 @@ public class AmbariClusterUpscaleService {
         LOGGER.info("Start installing Ambari services");
         HostGroup hostGroup = hostGroupService.getByClusterIdAndName(stack.getCluster().getId(), hostGroupName);
         Set<HostMetadata> hostMetadata = hostGroupService.findEmptyHostMetadataInHostGroup(hostGroup.getId());
-        ambariClusterConnector.installServices(stack, hostGroup, hostMetadata);
+        ambariClusterConnector.upscaleCluster(stack, hostGroup, hostMetadata);
     }
 
     public void executePostRecipesOnNewHosts(Long stackId, String hostGroupName) throws CloudbreakException {

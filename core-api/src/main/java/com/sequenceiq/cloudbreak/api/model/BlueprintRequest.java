@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BlueprintRequest extends BlueprintBase {
 
-    @Size(max = 100, min = 1, message = "The length of the blueprint's name has to be in range of 1 to 100")
+    @Size(max = 100, min = 1, message = "The length of the validation's name has to be in range of 1 to 100")
     @ApiModelProperty(value = ModelDescriptions.NAME, required = true)
     private String name;
 

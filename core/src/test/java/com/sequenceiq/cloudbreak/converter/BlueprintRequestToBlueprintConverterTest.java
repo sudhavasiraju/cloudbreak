@@ -13,9 +13,9 @@ import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sequenceiq.cloudbreak.api.model.BlueprintRequest;
-import com.sequenceiq.cloudbreak.controller.json.JsonHelper;
+import com.sequenceiq.cloudbreak.json.JsonHelper;
 import com.sequenceiq.cloudbreak.domain.Blueprint;
-import com.sequenceiq.cloudbreak.service.blueprint.BlueprintUtils;
+import com.sequenceiq.cloudbreak.blueprint.utils.BlueprintUtils;
 
 public class BlueprintRequestToBlueprintConverterTest extends AbstractJsonConverterTest<BlueprintRequest> {
 
@@ -40,7 +40,7 @@ public class BlueprintRequestToBlueprintConverterTest extends AbstractJsonConver
     public void testConvert() throws JsonProcessingException {
         // GIVEN
         // WHEN
-        Blueprint result = underTest.convert(getRequest("stack/blueprint.json"));
+        Blueprint result = underTest.convert(getRequest("stack/validation.json"));
         // THEN
         assertAllFieldsNotNull(result, Collections.singletonList("inputParameters"));
     }

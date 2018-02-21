@@ -40,7 +40,7 @@ public class ClusterRequestToClusterConverterTest extends AbstractJsonConverterT
         // WHEN
         Cluster result = underTest.convert(getRequest("stack/cluster.json"));
         // THEN
-        assertAllFieldsNotNull(result, Arrays.asList("stack", "blueprint", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
+        assertAllFieldsNotNull(result, Arrays.asList("stack", "validation", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
                 "ambariStackDetails", "fileSystem", "certDir", "rdsConfigs", "ldapConfig", "attributes", "blueprintCustomProperties", "uptime",
                 "kerberosConfig", "ambariSecurityMasterKey"));
     }
@@ -53,7 +53,7 @@ public class ClusterRequestToClusterConverterTest extends AbstractJsonConverterT
         // WHEN
         Cluster result = underTest.convert(getRequest("stack/cluster-with-file-system.json"));
         // THEN
-        assertAllFieldsNotNull(result, Arrays.asList("stack", "blueprint", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
+        assertAllFieldsNotNull(result, Arrays.asList("stack", "validation", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
                 "ambariStackDetails", "certDir", "rdsConfigs", "ldapConfig", "attributes", "blueprintCustomProperties", "uptime",
                 "ambariSecurityMasterKey"));
     }
@@ -64,7 +64,7 @@ public class ClusterRequestToClusterConverterTest extends AbstractJsonConverterT
         // WHEN
         Cluster result = underTest.convert(getRequest("stack/cluster-no-gateway.json"));
         // THEN
-        assertAllFieldsNotNull(result, Arrays.asList("stack", "blueprint", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
+        assertAllFieldsNotNull(result, Arrays.asList("stack", "validation", "creationStarted", "creationFinished", "upSince", "statusReason", "ambariIp",
                 "ambariStackDetails", "fileSystem", "certDir", "rdsConfigs", "ldapConfig", "attributes", "blueprintCustomProperties", "uptime",
                 "kerberosConfig", "ambariSecurityMasterKey"));
 

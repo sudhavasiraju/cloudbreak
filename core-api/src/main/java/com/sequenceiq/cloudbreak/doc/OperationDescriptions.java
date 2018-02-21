@@ -2,17 +2,17 @@ package com.sequenceiq.cloudbreak.doc;
 
 public class OperationDescriptions {
     public static class BlueprintOpDescription {
-        public static final String POST_PRIVATE = "create blueprint as private resource";
-        public static final String POST_PUBLIC = "create blueprint as public resource";
+        public static final String POST_PRIVATE = "create validation as private resource";
+        public static final String POST_PUBLIC = "create validation as public resource";
         public static final String GET_PRIVATE = "retrieve private blueprints";
         public static final String GET_PUBLIC = "retrieve public and private (owned) blueprints";
-        public static final String GET_PRIVATE_BY_NAME = "retrieve a private blueprint by name";
-        public static final String GET_PUBLIC_BY_NAME = "retrieve a public or private (owned) blueprint by name";
-        public static final String GET_BY_ID = "retrieve blueprint by id";
-        public static final String DELETE_PRIVATE_BY_NAME = "delete private blueprint by name";
-        public static final String DELETE_PUBLIC_BY_NAME = "delete public (owned) or private blueprint by name";
-        public static final String DELETE_BY_ID = "delete blueprint by id";
-        public static final String GET_BY_BLUEPRINT_ID = "retrieve blueprint request by blueprint name";
+        public static final String GET_PRIVATE_BY_NAME = "retrieve a private validation by name";
+        public static final String GET_PUBLIC_BY_NAME = "retrieve a public or private (owned) validation by name";
+        public static final String GET_BY_ID = "retrieve validation by id";
+        public static final String DELETE_PRIVATE_BY_NAME = "delete private validation by name";
+        public static final String DELETE_PUBLIC_BY_NAME = "delete public (owned) or private validation by name";
+        public static final String DELETE_BY_ID = "delete validation by id";
+        public static final String GET_BY_BLUEPRINT_ID = "retrieve validation request by validation name";
     }
 
     public static class TemplateOpDescription {
@@ -99,7 +99,7 @@ public class OperationDescriptions {
         public static final String PUT_BY_STACK_ID = "update cluster by stack id";
         public static final String PUT_BY_STACK_NAME = "update cluster by stack name";
         public static final String UPGRADE_AMBARI = "upgrade the Ambari version";
-        public static final String GET_CLUSTER_PROPERTIES = "get cluster properties with blueprint outputs";
+        public static final String GET_CLUSTER_PROPERTIES = "get cluster properties with validation outputs";
         public static final String FAILURE_REPORT = "failure report";
         public static final String REPAIR_CLUSTER = "repair the cluster";
     }
@@ -236,7 +236,7 @@ public class OperationDescriptions {
         public static final String GET_REGION_R_BY_TYPE = "retrive regions by type";
         public static final String GET_REGION_AV_BY_TYPE = "retrive availability zones by type";
         public static final String GET_IMAGES = "retrive available images";
-        public static final String GET_RECOMMENDATION = "creates a recommendation that advises cloud resources for the given blueprint";
+        public static final String GET_RECOMMENDATION = "creates a recommendation that advises cloud resources for the given validation";
         public static final String GET_TAG_SPECIFICATIONS = "retrive tag specifications";
         public static final String GET_SPECIALS = "retrive special properties";
         public static final String GET_IMAGE_R_BY_TYPE = "retrive images by type";

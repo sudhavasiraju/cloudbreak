@@ -57,6 +57,7 @@ import com.sequenceiq.cloudbreak.domain.Resource;
 import com.sequenceiq.cloudbreak.domain.SecurityConfig;
 import com.sequenceiq.cloudbreak.domain.SecurityGroup;
 import com.sequenceiq.cloudbreak.domain.SecurityRule;
+import com.sequenceiq.cloudbreak.domain.SmartSenseSubscription;
 import com.sequenceiq.cloudbreak.domain.Stack;
 import com.sequenceiq.cloudbreak.domain.StackStatus;
 import com.sequenceiq.cloudbreak.domain.Template;
@@ -512,7 +513,7 @@ public class TestUtil {
         cloudbreakUsage.setStackName("usagestack");
         cloudbreakUsage.setStackId(1L);
         cloudbreakUsage.setBlueprintId(1L);
-        cloudbreakUsage.setBlueprintName("blueprint");
+        cloudbreakUsage.setBlueprintName("validation");
         cloudbreakUsage.setInstanceNum(6);
         cloudbreakUsage.setPeak(10);
         cloudbreakUsage.setFlexId("FLEX-1234567");
@@ -566,6 +567,16 @@ public class TestUtil {
         resource.setResourceName("testResource");
         resource.setResourceType(ResourceType.GCP_INSTANCE);
         return resource;
+    }
+
+    public static SmartSenseSubscription smartSenseSubscription() {
+        SmartSenseSubscription smartSenseSubscription = new SmartSenseSubscription();
+        smartSenseSubscription.setSubscriptionId("1234-1234-1234-1244");
+        smartSenseSubscription.setAccount("hortonworks");
+        smartSenseSubscription.setOwner("hwx-user");
+        smartSenseSubscription.setPublicInAccount(false);
+        smartSenseSubscription.setId(1L);
+        return smartSenseSubscription;
     }
 
     public static Stack setSpotInstances(Stack stack) {

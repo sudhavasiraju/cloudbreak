@@ -30,7 +30,7 @@ import com.sequenceiq.cloudbreak.orchestrator.state.ExitCriteriaModel;
 import com.sequenceiq.cloudbreak.repository.StackRepository;
 import com.sequenceiq.cloudbreak.service.ClusterComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.GatewayConfigService;
-import com.sequenceiq.cloudbreak.service.cluster.AmbariSecurityConfigProvider;
+import com.sequenceiq.cloudbreak.service.cluster.ambari.AmbariSecurityConfigProvider;
 import com.sequenceiq.cloudbreak.util.StackUtil;
 
 @Service

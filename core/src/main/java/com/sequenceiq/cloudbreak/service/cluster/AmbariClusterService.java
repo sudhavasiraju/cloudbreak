@@ -62,8 +62,8 @@ import com.sequenceiq.cloudbreak.common.type.ComponentType;
 import com.sequenceiq.cloudbreak.common.type.HostMetadataState;
 import com.sequenceiq.cloudbreak.controller.BadRequestException;
 import com.sequenceiq.cloudbreak.controller.NotFoundException;
-import com.sequenceiq.cloudbreak.controller.json.JsonHelper;
-import com.sequenceiq.cloudbreak.controller.validation.blueprint.BlueprintValidator;
+import com.sequenceiq.cloudbreak.json.JsonHelper;
+import com.sequenceiq.cloudbreak.blueprint.validation.BlueprintValidator;
 import com.sequenceiq.cloudbreak.converter.scheduler.StatusToPollGroupConverter;
 import com.sequenceiq.cloudbreak.core.CloudbreakException;
 import com.sequenceiq.cloudbreak.core.CloudbreakSecuritySetupException;
@@ -334,7 +334,7 @@ public class AmbariClusterService implements ClusterService {
             return clusterJson;
         } catch (HttpResponseException e) {
             if ("Not Found".equals(e.getMessage())) {
-                throw new NotFoundException("Ambari blueprint not found.", e);
+                throw new NotFoundException("Ambari validation not found.", e);
             } else {
                 String errorMessage = AmbariClientExceptionUtil.getErrorMessage(e);
                 throw new CloudbreakServiceException("Could not get Cluster from Ambari as JSON: " + errorMessage, e);
