@@ -18,12 +18,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.ForbiddenException;
+import java.util.Set;
 
 public class ConnectorsTests extends CloudbreakTest {
-
-    public static final String VALID_CRED_NAME = "valid-credential";
-
-    public static final String CRED_DESCRIPTION = "temporary credential for API E2E tests";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectorsTests.class);
 
@@ -66,8 +63,23 @@ public class ConnectorsTests extends CloudbreakTest {
         }
     }
 
-    @Test(priority = 0, groups = { "common" })
-    public void testCreateValidCredential() throws Exception {
+    @Test(priority = 0, groups = { "regions" })
+    public void testGetDefaultRegion() throws Exception {
+        given(CloudbreakClient.isCreated());
+        given(cloudProvider.aValidCredential(), cloudProvider.getPlatform() + " credential is created");
+        given(Region.request(), cloudProvider.getPlatform() + " region request");
+        when(Region.getPlatformRegions(), "Default region is requested to "
+                + cloudProvider.getPlatform() + " credential");
+        then(Region.assertThis(
+                (region, t) -> {
+                    Assert.assertTrue(region.getRegionResponse().getDefaultRegion().contains(cloudProvider.region()),
+                            "[" + cloudProvider.region() + "] region is not the default one!");
+                }), "[" + cloudProvider.region() + "] region should be the default one."
+        );
+    }
+
+    @Test(priority = 1, groups = { "regions" })
+    public void testListAllAvailableRegions() throws Exception {
         given(CloudbreakClient.isCreated());
         given(cloudProvider.aValidCredential(), cloudProvider.getPlatform() + " credential is created");
         given(Region.request(), cloudProvider.getPlatform() + " region request");
@@ -75,9 +87,10 @@ public class ConnectorsTests extends CloudbreakTest {
                 + cloudProvider.getPlatform() + " credential");
         then(Region.assertThis(
                 (region, t) -> {
-                    Assert.assertTrue(region.getRegionResponse().getRegions().contains(cloudProvider.region()),
-                            cloudProvider.region() + " region is not found in the response");
-                }), cloudProvider.region() + " region should be part of the response."
+                    Set<String> regionActual = region.getRegionResponse().getRegions();
+
+                    Assert.assertTrue(regionActual.containsAll(cloudProvider.regionExpected()));
+                }), "All the expected region should be part of the response."
         );
     }
 }

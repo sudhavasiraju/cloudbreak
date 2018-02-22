@@ -7,8 +7,11 @@ import com.sequenceiq.it.cloudbreak.newway.Credential;
 import com.sequenceiq.it.cloudbreak.newway.CredentialEntity;
 import com.sequenceiq.it.cloudbreak.newway.TestParameter;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class AwsCloudProvider extends CloudProviderHelper {
 
@@ -126,6 +129,16 @@ public class AwsCloudProvider extends CloudProviderHelper {
     @Override
     public String getCredentialName() {
         return CREDNAME;
+    }
+
+    @Override
+    public Set<String> regionExpected() {
+        Set<String> expectedRegions = new HashSet<String>(Arrays.asList("ap-south-1",
+                "eu-west-3", "eu-west-2", "eu-west-1", "ap-northeast-2", "ap-northeast-1",
+                "sa-east-1", "ca-central-1", "ap-southeast-1", "ap-southeast-2", "eu-central-1",
+                "us-east-1", "us-east-2", "us-west-1", "us-west-2"));
+
+        return expectedRegions;
     }
 
     public Map<String, Object> awsCredentialDetailsKey() {

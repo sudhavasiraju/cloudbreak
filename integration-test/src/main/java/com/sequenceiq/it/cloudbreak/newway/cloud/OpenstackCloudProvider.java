@@ -7,8 +7,11 @@ import com.sequenceiq.it.cloudbreak.newway.Credential;
 import com.sequenceiq.it.cloudbreak.newway.CredentialEntity;
 import com.sequenceiq.it.cloudbreak.newway.TestParameter;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class OpenstackCloudProvider extends CloudProviderHelper {
 
@@ -110,6 +113,11 @@ public class OpenstackCloudProvider extends CloudProviderHelper {
     @Override
     public String getCredentialName() {
         return CREDNAME;
+    }
+
+    @Override
+    public Set<String> regionExpected() {
+        return new HashSet<String>(Arrays.asList("RegionOne"));
     }
 
     public Map<String, Object> openstackCredentialDetails() {

@@ -7,8 +7,11 @@ import com.sequenceiq.it.cloudbreak.newway.Credential;
 import com.sequenceiq.it.cloudbreak.newway.CredentialEntity;
 import com.sequenceiq.it.cloudbreak.newway.TestParameter;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class GcpCloudProvider extends CloudProviderHelper {
     public static final String GCP = "gcp";
@@ -101,6 +104,17 @@ public class GcpCloudProvider extends CloudProviderHelper {
     @Override
     public String getCredentialName() {
         return CREDNAME;
+    }
+
+    @Override
+    public Set<String> regionExpected() {
+        Set<String> expectedRegions = new HashSet<String>(Arrays.asList("asia-east1",
+                "australia-southeast1", "europe-west2", "europe-west3", "europe-west4",
+                "southamerica-east1", "asia-southeast1", "us-central1",
+                "europe-west1", "us-west1", "northamerica-northeast1",
+                "us-east4", "asia-south1", "us-east1", "asia-northeast1"));
+
+        return expectedRegions;
     }
 
     public Map<String, Object> gcpCredentialDetails() {

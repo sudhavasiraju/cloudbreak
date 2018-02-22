@@ -20,11 +20,11 @@ public class RegionAction {
             regionEntity.getPlatformResourceRequest().setCredentialName(credential.getName());
         }
 
-        Log.log(" get " + regionEntity.getPlatformResourceRequest().getCredentialName() + " credential's regions. ");
+        Log.log(" get " + regionEntity.getPlatformResourceRequest().getCredentialName() + " region to credential ID. ");
         regionEntity.setRegionResponse(client.getCloudbreakClient()
                 .connectorV2Endpoint()
                 .getRegionsByCredentialId(regionEntity.getPlatformResourceRequest())
         );
-        Log.logJSON(" get regions' response: ", regionEntity.getRegionResponse());
+        Log.logJSON(" get region response: ", regionEntity.getRegionResponse());
     }
 }

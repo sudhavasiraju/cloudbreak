@@ -7,8 +7,11 @@ import com.sequenceiq.it.cloudbreak.newway.Credential;
 import com.sequenceiq.it.cloudbreak.newway.CredentialEntity;
 import com.sequenceiq.it.cloudbreak.newway.TestParameter;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class AzureCloudProvider extends CloudProviderHelper {
     public static final String AZURE = "azure";
@@ -101,6 +104,20 @@ public class AzureCloudProvider extends CloudProviderHelper {
     @Override
     public String getCredentialName() {
         return CREDNAME;
+    }
+
+    @Override
+    public Set<String> regionExpected() {
+        Set<String> expectedRegions = new HashSet<String>(Arrays.asList("UK West",
+                "Japan West", "West US 2", "Australia East", "West India", "East Asia",
+                "US Gov Virginia", "South India", "Canada East", "South East Asia", "US Gov Iowa",
+                "Korea Central", "Korea South", "Central US", "South Central US", "Japan East",
+                "West Europe", "West Central US", "East US", "China East", "East US 2", "Australia Southeast",
+                "Central India", "Germany Central", "US Gov Arizona", "China North", "Brazil South",
+                "West US", "US DoD Central", "US Gov Texas", "Canada Central", "North Central US",
+                "Germany Northeast", "North Europe", "UK South", "US DoD East"));
+
+        return expectedRegions;
     }
 
     public Map<String, Object> azureCredentialDetails() {
